@@ -1,0 +1,40 @@
+@startuml
+entity User {
+  +firstname : String
+  +lastname : String
+  +email: string
+  +password: string
+  +created_at: timestamp
+  +updated_at: timestamp
+  +FavoriteSong : Song
+  +FavoriteArtist : Artist
+}
+
+
+entity Song{
+    +title: string
+    +artist: string
+    +album: string
+    +created_at: timestamp
+    +length: string
+}
+
+entity Artist {
+    +firstname: string
+    +lastname: string
+    +album : List<Album>
+    +songs : List<Song>
+}
+
+entity Album{
+    +name : string
+    +songs : List<Song>
+    +artist : Artist
+}
+
+User o--> Song : FavoriteSong
+User o--> Artist : FavoriteArtist
+Artist o--> Album : album
+Artist o--> Song : songs
+
+@enduml

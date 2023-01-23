@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatifyProject.Webapi", "StatifyProject.Webapi\StatifyProject.Webapi.csproj", "{761C57F4-F765-4ACD-A5C8-2AACB65CFBD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatifyProject.Application", "StatifyProject.Application\StatifyProject.Application.csproj", "{CDB1A427-4321-46D1-99DA-072C915449DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{761C57F4-F765-4ACD-A5C8-2AACB65CFBD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{761C57F4-F765-4ACD-A5C8-2AACB65CFBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{761C57F4-F765-4ACD-A5C8-2AACB65CFBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{761C57F4-F765-4ACD-A5C8-2AACB65CFBD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDB1A427-4321-46D1-99DA-072C915449DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDB1A427-4321-46D1-99DA-072C915449DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDB1A427-4321-46D1-99DA-072C915449DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDB1A427-4321-46D1-99DA-072C915449DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
