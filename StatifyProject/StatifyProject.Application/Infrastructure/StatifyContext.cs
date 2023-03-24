@@ -42,6 +42,7 @@ namespace StatifyProject.Application.Infrastructure
             }
         }
 
+
         public void Seed()
         {
             Randomizer.Seed = new Random(1039);
@@ -100,8 +101,5 @@ namespace StatifyProject.Application.Infrastructure
             SaveChanges();
 
         }
-
-
-
     }
 }
