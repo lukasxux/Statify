@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using StatifyProject.Application.Model;
+using Bogus.DataSets;
 
 namespace StatifyProject.Application.Infrastructure
 {
@@ -13,6 +14,50 @@ namespace StatifyProject.Application.Infrastructure
         public DbSet<Artist> Artists => Set<Artist>();
 
         public StatifyContext(DbContextOptions<StatifyContext> opt) : base(opt) { }
+
+        private void Initialize()
+        {
+            Randomizer.Seed = new Random(1039);
+            var faker = new Faker("de");
+            var artists = new Artist[]
+            {
+               
+                new Artist(Name: "Tom Odell"),
+
+            };
+            Artists.AddRange(artists);
+            SaveChanges();
+
+            var songs = new Song[]
+            {
+                
+                new Song(Title: "Another Love", Artist: artists[0], Created_at: DateTime.UtcNow, Length: TimeSpan.FromSeconds(3*60+10),
+                    ImageUrl: "https://media.hitparade.ch/cover/big/tom_odell-another_love_s_3.jpg",
+                    Link: "https://www.youtube.com/watch?v=MwpMEbgC7DA") {Guid = faker.Random.Guid()},
+            };
+            Songs.AddRange(songs);
+            SaveChanges();
+
+            var users = new Faker<User>("de").CustomInstantiator(f =>
+            {
+               
+                return new User(
+                  username: "matrix",
+                  email: $"matrix@mail.at",
+                  initialPassword: "1111",
+                  created_at: new DateTime(2021, 1, 1),
+                  favoriteSong: songs[0],
+                  favoriteArtist: artists[0])
+
+                { Guid = f.Random.Guid() };
+            })
+            .Generate(1)
+            .GroupBy(e => e.Username).Select(g => g.First())
+            .ToList();
+
+            Users.AddRange(users);
+            SaveChanges();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,7 +89,7 @@ namespace StatifyProject.Application.Infrastructure
 
         public void Seed()
         {
-            Randomizer.Seed = new Random(1039);
+            Randomizer.Seed = new Random(103);
             var faker = new Faker("de");
             var artists = new Artist[]
             {
@@ -52,7 +97,7 @@ namespace StatifyProject.Application.Infrastructure
                 new Artist(Name: "David Guetta & Bebe Rexha"),
                 new Artist(Name: "Sam Smith & Kim Petras"),
                 new Artist(Name: "Raye Feat. 070 Shake"),
-                new Artist(Name: "Tom Odell"),
+
 
             };
             Artists.AddRange(artists);
@@ -72,9 +117,7 @@ namespace StatifyProject.Application.Infrastructure
                 new Song(Title: "Escapism.", Artist: artists[3], Created_at: DateTime.UtcNow, Length: TimeSpan.FromSeconds(3*60+10), 
                     ImageUrl: "https://i.ytimg.com/vi/0EBw-CWc4Uw/maxresdefault.jpg",
                     Link: "https://www.youtube.com/watch?v=Dll6VJ2C7wo") {Guid = faker.Random.Guid()},
-                new Song(Title: "Another Love", Artist: artists[4], Created_at: DateTime.UtcNow, Length: TimeSpan.FromSeconds(3*60+10), 
-                    ImageUrl: "https://media.hitparade.ch/cover/big/tom_odell-another_love_s_3.jpg",
-                    Link: "https://www.youtube.com/watch?v=MwpMEbgC7DA") {Guid = faker.Random.Guid()},
+               
             };
             Songs.AddRange(songs);
             SaveChanges();
@@ -101,7 +144,15 @@ namespace StatifyProject.Application.Infrastructure
 
         }
 
-
+        public void CreateDatabase(bool isDevelopment)
+        {
+            if (isDevelopment) { Database.EnsureDeleted(); }
+            // EnsureCreated only creates the model if the database does not exist or it has no
+            // tables. Returns true if the schema was created.  Returns false if there are
+            // existing tables in the database. This avoids initializing multiple times.
+            if (Database.EnsureCreated()) { Initialize(); }
+            if (isDevelopment) Seed();
+        }
 
     }
 }

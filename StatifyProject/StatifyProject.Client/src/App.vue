@@ -42,7 +42,7 @@ main {
 </style>
 <script>
 import HomeView from './views/HomeView.vue';
-import ArtistView from './views/ArtistView.vue';
+import ArtistView from './views/ArtistView2.vue';
 import SongView from './views/SongView.vue';
 
 export default {

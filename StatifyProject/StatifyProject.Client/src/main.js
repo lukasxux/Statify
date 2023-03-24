@@ -8,7 +8,7 @@ import process from 'node:process'
 import './assets/main.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-axios.defaults.baseURL = process.env.NODE_ENV == 'production' ? "/api" : "https://localhost:5001/api";
+axios.defaults.baseURL = process.env.NODE_ENV == 'production' ? "/api" : "https://localhost:5002/api";
 
 const app = createApp(App)
 app.use(router)
