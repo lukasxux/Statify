@@ -55,9 +55,7 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     using (var db = scope.ServiceProvider.GetRequiredService<StatifyContext>())
     {
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
-        db.Seed();  // TODO: Implementiere diese Methode im Datenbankcontext.
+        db.CreateDatabase(isDevelopment: app.Environment.IsDevelopment());
     }
     app.UseCors();
 }
