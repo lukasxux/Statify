@@ -8,16 +8,21 @@ using StatifyProject.Application.Dto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using Microsoft.Extensions.Logging;
+using Webapi;
 
 var builder = WebApplication.CreateBuilder(args);
 // SpengernewsContext ist der DbContext, der im Application Project angelegt wurde.
 // Aktiviere diese Zeile, wenn du den DB Context definiert hat.
+
 builder.Services.AddDbContext<StatifyContext>(opt =>
-     opt.UseSqlite(builder.Configuration.GetConnectionString("Sqlite")));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"),
+        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
 
 // Wir wollen automatisch nach Controllern im Ordner Controllers suchen.
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddHttpContextAccessor();
 
 byte[] secret = Convert.FromBase64String(builder.Configuration["Secret"]);
 builder.Services
@@ -43,28 +48,42 @@ if (builder.Environment.IsDevelopment())
 // *************************************************************************************************
 // APPLICATION
 // *************************************************************************************************
-
-
 var app = builder.Build();
-// Leitet http auf https weiter (http Port 5000 auf https Port 5001)
 app.UseHttpsRedirection();
 if (app.Environment.IsDevelopment())
 {
-    // Im Development Mode erstellen wir bei jedem Serverstart die Datenbank neu.
-    // Aktiviere diese Zeilen, wenn du den DB Context erstellt hat.
-    using (var scope = app.Services.CreateScope())
+    // We will create a fresh sql server container in development mode. For performance reasons,
+    // you can disable deleteAfterShutdown because in development mode the database is deleted
+    // before it is generated.
+    try
+    {
+        
+        await app.UseSqlServerContainer(
+            containerName: "Statify_sqlserver", version: "latest",
+            connectionString: app.Configuration.GetConnectionString("Default"),
+            deleteAfterShutdown: true);
+    }
+    catch (Exception e)
+    {
+        app.Logger.LogError(e.Message);
+        return;
+    }
+    app.UseCors();
+}
+
+// Creating the database.
+using (var scope = app.Services.CreateScope())
+{
     using (var db = scope.ServiceProvider.GetRequiredService<StatifyContext>())
     {
         db.CreateDatabase(isDevelopment: app.Environment.IsDevelopment());
     }
-    app.UseCors();
 }
+
 app.UseAuthentication();
 app.UseAuthorization();
-// Liefert die statischen Dateien, die von VueJS generiert werden, aus.
-app.UseStaticFiles();
-// Bearbeitet die Routen, für die wir Controller geschrieben haben.
+
 app.MapControllers();
-// Wichtig für das clientseitige Routing, damit wir direkt an eine URL in der Client App steuern können.
+app.UseStaticFiles();
 app.MapFallbackToFile("index.html");
 app.Run();
