@@ -93,13 +93,13 @@ if [ $CREATE_APP = y ]; then
 
     ACR_USER=$(az acr credential show --name $ACR_NAME --query username -o tsv)
     ACR_PASS=$(az acr credential show --name $ACR_NAME --query passwords[0].value -o tsv)
-    az appservice plan create        --name ${DNS_NAME}-plan --resource-group $AZ_GROUP --is-linux --location $LOCATION --sku F1 > /dev/null
-    az webapp create                 --name $DNS_NAME        --resource-group $AZ_GROUP --plan ${DNS_NAME}-plan  --deployment-container-image-name $ACR_NAME.azurecr.io/$DOCKER_IMAGENAME:v1 --docker-registry-server-user $ACR_USER --docker-registry-server-password $ACR_PASS  > /dev/null
+    az appservice plan create        --name $DNS_NAME-plan --resource-group $AZ_GROUP --is-linux --location $LOCATION --sku B1 > /dev/null
+    az webapp create                 --name $DNS_NAME        --resource-group $AZ_GROUP --plan $DNS_NAME-plan  --deployment-container-image-name $ACR_NAME.azurecr.io/$DOCKER_IMAGENAME:v1 --docker-registry-server-user $ACR_USER --docker-registry-server-password $ACR_PASS  > /dev/null
     
     # GENERATE LOCAL ENVIRONMENTS FOR THE APP SERVICE
     # Adapt these to your requirements.
     # Generate connectionstring according to appsettings.json, key ConnectionStrings:Default
-    DB_CONNECTIONSTRING="Server=${DNS_NAME}.database.windows.net;Initial Catalog=${DB_DATABASE};User Id=${DB_USERNAME};Password=${DB_PASSWORD}"
+    DB_CONNECTIONSTRING="Server=$DNS_NAME.database.windows.net;Initial Catalog=StatifyDb;User Id=sa;Password=SqlServer2019"
     # Auto generate secret. 
     # !!! Do not generate a new secret if you only re-reploy a new containerimage. Any password in the database would become invalid. !!!
     SECRET=$(dd if=/dev/random bs=128 count=1 2> /dev/null | base64)

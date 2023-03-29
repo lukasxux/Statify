@@ -1,5 +1,5 @@
-DOCKER_IMAGE=spengernews_webapp
-SQL_IMAGE=spengernews_sqlserver
+DOCKER_IMAGE=statify_app
+SQL_IMAGE=Statify_sqlserver
 # Use INTERNAL port for the communication inside the docker network (1433 not 11433)
 CONN_STR="Server=10.0.38.3,1433;Initial Catalog=StatifyDb;User Id=sa;Password=SqlServer2019;TrustServerCertificate=true"
 # Generate random secret (the secret in appsettings.json is empty)
@@ -11,7 +11,7 @@ docker rm -f $SQL_IMAGE
 docker volume prune -f
 docker image prune -f
 docker network prune -f
-docker network rm sqlserver_network
+
 
 # Create a docker network.
 docker network create --subnet=10.0.38.0/24 sqlserver_network
