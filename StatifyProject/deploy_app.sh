@@ -99,7 +99,7 @@ if [ $CREATE_APP = y ]; then
     # GENERATE LOCAL ENVIRONMENTS FOR THE APP SERVICE
     # Adapt these to your requirements.
     # Generate connectionstring according to appsettings.json, key ConnectionStrings:Default
-    DB_CONNECTIONSTRING="Server=$DNS_NAME.database.windows.net;Initial Catalog=StatifyDb;User Id=sa;Password=SqlServer2019"
+DB_CONNECTIONSTRING="Server=${DNS_NAME}.database.windows.net;Initial Catalog=${DB_DATABASE};User Id=${DB_USERNAME};Password=${DB_PASSWORD}"
     # Auto generate secret. 
     # !!! Do not generate a new secret if you only re-reploy a new containerimage. Any password in the database would become invalid. !!!
     SECRET=$(dd if=/dev/random bs=128 count=1 2> /dev/null | base64)
