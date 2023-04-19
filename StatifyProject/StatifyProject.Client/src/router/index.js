@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import ArtistView from '../views/ArtistView.vue'
 import SongView from '../views/SongView.vue'
+import SpotifyView from '../views/SpotifyView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +19,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+      
     },
 
     {
@@ -31,7 +33,12 @@ const router = createRouter({
       name: 'song',
       component: SongView,
     },
-    
+    {
+      path: '/spotify',
+      name: 'spotify',
+      component: SpotifyView,
+    },
+
   ]
 });
 

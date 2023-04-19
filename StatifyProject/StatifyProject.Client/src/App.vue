@@ -17,6 +17,9 @@ import axios from 'axios';
                             <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist"><h5>Artists</h5></router-link>
                         </li>
                         <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
+                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/spotify"><h5>Spotify</h5></router-link>
+                        </li>
+                        <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
                             <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/login"><h5>Login</h5></router-link>
                         </li>
                     </ul>
@@ -44,6 +47,7 @@ main {
 import HomeView from './views/HomeView.vue';
 import ArtistView from './views/ArtistView.vue';
 import SongView from './views/SongView.vue';
+import SpotifyView from './views/SpotifyView.vue'
 
 export default {
     name: 'App',
@@ -51,6 +55,7 @@ export default {
         HomeView,
         ArtistView,
         SongView,
+        SpotifyView
     },
     methods: {
         deleteToken() {
