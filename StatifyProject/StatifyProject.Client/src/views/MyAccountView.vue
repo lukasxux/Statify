@@ -94,127 +94,32 @@ export default {
       uri: '', // Spotify URI of the user
       url: '', // Link of the user's Spotify profile
       imgUrl: '', // Profile image URL of the user
-      topTracks: []
+
 
     };
   },
   mounted() {
     // Fetch the user's profile data from Spotify API and update the data properties
-    this.fetchProfileData();
+    this.fetchUserData();
   },
   methods: {
-    async fetchProfileData() {
-      const clientId = 'afc8cff8760e496a82a85b2cf42ff99b';
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
-      if (!code) {
-        this.redirectToAuthCodeFlow(clientId);
-      } else {
-        const accessToken = await this.getAccessToken(clientId, code);
-        const profile = await this.fetchProfile(accessToken);
-        const topTracks = await this.fetchTopTracks(accessToken);
-        this.updateProfilInfo(profile);
-        this.updateTopTracks(topTracks);
-      }
-    },
-    async redirectToAuthCodeFlow(clientId) {
-      const verifier = this.generateCodeVerifier(128);
-      const challenge = await this.generateCodeChallenge(verifier);
+ // Update the data properties 
+ fetchUserData(){
+  const storedArrayString = sessionStorage.getItem('profile');
+    const retrievedArray = JSON.parse(storedArrayString);
+    console.log(retrievedArray);
 
-      localStorage.setItem('verifier', verifier);
+    this.displayName = retrievedArray.display_name;
+    this.avatarSrc = retrievedArray.images[0].url;
+    this.id = retrievedArray.id;
+    this.email = retrievedArray.email;
+    this.uri = retrievedArray.uri;
+    this.url = retrievedArray.external_urls.spotify;
+    this.imgUrl = retrievedArray.images[0].url;
+   
 
-      const params = new URLSearchParams();
-      params.append('client_id', clientId);
-      params.append('response_type', 'code');
-      params.append('redirect_uri', 'http://localhost:5173/my-account');
-      params.append('scope', 'user-read-private user-read-email user-top-read');
-      params.append('code_challenge_method', 'S256');
-      params.append('code_challenge', challenge);
-
-      document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
-    },
-    async getAccessToken(clientId, code) {
-      const verifier = localStorage.getItem('verifier');
-
-      const params = new URLSearchParams();
-      params.append('client_id', clientId);
-      params.append('grant_type', 'authorization_code');
-      params.append('code', code);
-      params.append('redirect_uri', 'http://localhost:5173/my-account');
-      params.append('code_verifier', verifier);
-
-      const result = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params,
-      });
-
-      const { access_token } = await result.json();
-      return access_token;
-    },
-    generateCodeVerifier(length) {
-      let text = '';
-      let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-      for (let i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-      }
-
-return text;
-},
-async generateCodeChallenge(verifier) {
-const hashedVerifier = await this.sha256(verifier);
-const base64Url = btoa(String.fromCharCode(...new Uint8Array(hashedVerifier)))
-  .replace('+', '-')
-  .replace('/', '_')
-  .replace(/=+$/, '');
-
-return base64Url;
-},
-async sha256(plain) {
-const encoder = new TextEncoder();
-const data = encoder.encode(plain);
-const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-return hashBuffer;
-},
-async fetchProfile(accessToken) {
-const result = await fetch('https://api.spotify.com/v1/me', {
-  headers: { Authorization: `Bearer ${accessToken}` },
-});
-
-const profile = await result.json();
-console.log(profile)
-return profile;
-},
-async fetchTopTracks(accessToken) {
-const result = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=10', {
-  headers: { Authorization: `Bearer ${accessToken}` },
-});
-const topTracks = await result.json();
-
-console.log(topTracks)
-
-sessionStorage.setItem('topTracks', JSON.stringify(topTracks));
-
-return topTracks;
-
-
-},
-updateProfilInfo(profile) {
-this.displayName = profile.display_name;
-this.avatarSrc = profile.images[0].url;
-this.id = profile.id;
-this.email = profile.email;
-this.uri = profile.uri;
-this.url = profile.external_urls.spotify;
-this.imgUrl = profile.images[0].url;
-},
-
-updateTopTracks(topTracks) {
-  this.topTracks = topTracks.items.map((item) => item.name);
-console.log(this.topTracks)
-},
-},
+ }
+  }
 };
 </script>
 

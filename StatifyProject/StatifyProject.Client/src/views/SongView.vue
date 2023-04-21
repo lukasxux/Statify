@@ -13,16 +13,26 @@ import axios from 'axios';
             <img id="avatar" class="avatar" width="200" :src="avatarSrc" />
           </div>
           <ul class="profile-list">
-            <li><strong>Track 1:</strong> <span class="profile-info">{{ topTrackTitle[1] }} </span></li>
-            <li><strong>Track 2:</strong> <span class="profile-info">{{ topTrackTitle[2] }}  </span></li>
-            <li><strong>Track 3:</strong> <span class="profile-info">{{ topTrackTitle[3] }}  </span></li>
-            <li><strong>Track 4:</strong> <span class="profile-info">{{ topTrackTitle[4] }}  </span></li>
-            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[5] }}  </span></li>
-            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[6] }}  </span></li>
-            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[7] }}  </span></li>
-            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[8] }}  </span></li>
-            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[9] }} </span></li>
-            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[10] }}  </span></li>
+            <img :src=topTrackImg[0] alt="Song Picture">
+            <li><strong>Track 1:</strong> <span class="profile-info">{{ topTrackTitle[0] }} </span></li>
+            <img :src=topTrackImg[1] alt="Song Picture">
+            <li><strong>Track 2:</strong> <span class="profile-info">{{ topTrackTitle[1] }}  </span></li>
+            <img :src=topTrackImg[2] alt="Song Picture">
+            <li><strong>Track 3:</strong> <span class="profile-info">{{ topTrackTitle[2] }}  </span></li>
+            <img :src=topTrackImg[3] alt="Song Picture">
+            <li><strong>Track 4:</strong> <span class="profile-info">{{ topTrackTitle[3] }}  </span></li>
+            <img :src=topTrackImg[4] alt="Song Picture">
+            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[4] }}  </span></li>
+            <img :src=topTrackImg[5] alt="Song Picture">
+            <li><strong>Track 6:</strong> <span class="profile-info">{{ topTrackTitle[5] }}  </span></li>
+            <img :src=topTrackImg[6] alt="Song Picture">
+            <li><strong>Track 7:</strong> <span class="profile-info">{{ topTrackTitle[6] }}  </span></li>
+            <img :src=topTrackImg[7] alt="Song Picture">
+            <li><strong>Track 8:</strong> <span class="profile-info">{{ topTrackTitle[7] }}  </span></li>
+            <img :src=topTrackImg[8] alt="Song Picture">
+            <li><strong>Track 9:</strong> <span class="profile-info">{{ topTrackTitle[8] }} </span></li>
+            <img :src=topTrackImg[9] alt="Song Picture">
+            <li><strong>Track 10:</strong> <span class="profile-info">{{ topTrackTitle[9] }}  </span></li>
           </ul>
         </section>
       </div>
@@ -31,8 +41,6 @@ import axios from 'axios';
 </template>
 
 <style scoped>
-
-
 h1 {
   color: #336699;
 }
@@ -63,7 +71,8 @@ h1 {
 export default {
   data() {
     return {
-      topTrackTitle: []
+      topTrackTitle: [],
+      topTrackImg: []
     };
   },
   mounted() {
@@ -71,11 +80,15 @@ export default {
   },
   methods: {
    logToptracks(){
-    console.log("logToptracks");
+
     const storedArrayString = sessionStorage.getItem('topTracks');
     const retrievedArray = JSON.parse(storedArrayString);
+    console.log("retrievedArray");
+    console.log(retrievedArray);
     this.topTrackTitle = retrievedArray.items.map((item) => item.name);
-    console.log(this.topTrackTitle);
+    this.topTrackImg = retrievedArray.items.map((item) => item.album.images[1].url);
+    console.log("img");
+    console.log(this.topTrackImg);
    },
    }
 };
