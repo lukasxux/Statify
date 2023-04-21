@@ -1,87 +1,240 @@
-<script setup>
-import axios from 'axios';
-</script>
+
 
 <template>
-    <div class="artistView">
-        <h1>Known Artists</h1>
-        <p v-if="authenticated">Click on the artist to make this as your favorite!</p>
-        <p v-else>Please log in to set your favourite artist.</p>
-        <div v-bind:class="{ artistbox: true, favorite: a.isFavorite }" v-for="a in artists" v-bind:key="a.guid" v-on:click="makeFavorite(a)">
-            <h4>{{ a.name }}</h4>
-            <div class="songbox" v-for="s in a.songs" v-bind:key="s.guid">
-                <div class="songtitle">{{ s.title }}</div>
-                <div class="songduration">{{ s.length }}</div>
+    <div class="container">
+        <div class="row">
+           <div class="col-sm-6 col-md-6 col-lg-3 d-flex justify-content-center align-items-center">
+              <div class="song-card ">
+                 <img :src=topAritstsPic[0] alt="Song Picture">
+                 <div class="song-details">
+                    <h3 class="song-name">{{topArtists[0]}}</h3>
+                    <p class="artist">Artist</p>
+                 </div>
+              </div>
+           </div>
+           <div class="col-sm-6 col-md-6 col-lg-3 d-flex justify-content-center align-items-center">
+              <div class="song-card">
+                 <img :src=topAritstsPic[1] alt="Song Picture">
+                 <div class="song-details">
+                    <h3 class="song-name">{{topArtists[1]}}</h3>
+                    <p class="artist">Artist</p>
+                 </div>
+              </div>
+           </div>
+           <div class="col-sm-6 col-md-6 col-lg-3 d-flex justify-content-center align-items-center">
+            <div class="song-card">
+               <img :src=topAritstsPic[2] alt="Song Picture">
+               <div class="song-details">
+                  <h3 class="song-name">{{topArtists[2]}}</h3>
+                  <p class="artist">Artist</p>
+               </div>
             </div>
+         </div>
+         <div class="col-sm-6 col-md-6 col-lg-3 d-flex justify-content-center align-items-center">
+            <div class="song-card">
+               <img :src=topAritstsPic[3] alt="Song Picture">
+               <div class="song-details">
+                  <h3 class="song-name">{{topArtists[3]}}</h3>
+                  <p class="artist">Artist</p>
+               </div>
+            </div>
+         </div>
         </div>
+     </div>
+     <div class="container">
+      <div class="row">
+         <div class="col-sm-6 col-md-6 col-lg-3 d-flex justify-content-center align-items-center">
+            <div class="song-card ">
+               <img :src=topAritstsPic[4] alt="Song Picture">
+               <div class="song-details">
+                  <h3 class="song-name">{{topArtists[4]}}</h3>
+                  <p class="artist">Artist</p>
+               </div>
+            </div>
+         </div>
+         <div class="ccol-sm-6 col-md-6 col-lg-3 d-flex justify-content-center align-items-center">
+            <div class="song-card">
+               <img :src=topAritstsPic[5] alt="Song Picture">
+               <div class="song-details">
+                  <h3 class="song-name">{{topArtists[5]}}</h3>
+                  <p class="artist">Artist</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-6 col-md-6 col-lg-3 d-flex justify-content-center align-items-center">
+          <div class="song-card">
+             <img :src=topAritstsPic[6] alt="Song Picture">
+             <div class="song-details">
+                <h3 class="song-name">{{topArtists[6]}}</h3>
+                <p class="artist">Artist</p>
+             </div>
+          </div>
+       </div>
+       <div class="col-sm-6 col-md-6 col-lg-3 d-flex justify-content-center align-items-center">
+          <div class="song-card">
+             <img :src=topAritstsPic[7] alt="Song Picture">
+             <div class="song-details">
+                <h3 class="song-name">{{topArtists[7]}}</h3>
+                <p class="artist">Artist</p>
+             </div>
+          </div>
+       </div>
+      </div>
+   </div>
+   <div class="container">
+    <div class="row">
+       <div class="col-sm-6 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
+          <div class="song-card ">
+             <img :src=topAritstsPic[8] alt="Song Picture">
+             <div class="song-details">
+                <h3 class="song-name">{{topArtists[8]}}</h3>
+                <p class="artist">Artist</p>
+             </div>
+          </div>
+       </div>
+       <div class="col-sm-6 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
+          <div class="song-card">
+             <img :src=topAritstsPic[9] alt="Song Picture">
+             <div class="song-details">
+                <h3 class="song-name">{{topArtists[9]}}</h3>
+                <p class="artist">Artist</p>
+             </div>
+          </div>
+       </div>
+     </div>
     </div>
+
+
+    
+
+
+      
 </template>
 
 <style scoped>
-table {
+
+img{
+    height: 15rem;
+    margin-top: 1rem;
+}
+
+.song-card{
+border : 5px solid white;
+width: 18rem;
+margin-bottom: 0.5rem;
+}
+
+.artist{
     color: white;
 }
 
-.textlink {
-    cursor: pointer;
-}
 
-.artistbox {
-    padding: 1em;
-    text-align: left;
-    margin-bottom: 1em;
-}
-
-.artistbox:hover {
-    background-color: hsl(0, 0%, 21%);
-}
-
-.songbox {
-    display: flex;
-    margin-left: 1em;
-}
-
-.songtitle {
-    flex-grow: 1;
-}
-
-.favorite {
-    border: 1px solid hsl(128, 100%, 20%);
-}
 </style>
 
 <script>
 export default {
-    data() {
-        return {
-            artists: [],
-        };
+  data() {
+    return {
+      topArtists: [], // Initialize an empty array to store the top tracks
+      topAritstsPic: []
+    };
+  },
+  mounted() {
+    // Fetch the user's profile data from Spotify API and update the data properties
+    this.fetchProfileData();
+
+  },
+  methods: {
+    async fetchProfileData() {
+      const clientId = 'afc8cff8760e496a82a85b2cf42ff99b';
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      if (!code) {
+        this.redirectToAuthCodeFlow(clientId);
+      } else {
+        const accessToken = await this.getAccessToken(clientId, code);
+        const profile = await this.fetchTopArtist(accessToken);
+        this.populateUI(profile);
+      }
     },
-    async mounted() {
-        var response = await axios.get('artist');
-        this.artists = response.data;
+    async redirectToAuthCodeFlow(clientId) {
+      const verifier = this.generateCodeVerifier(128);
+      const challenge = await this.generateCodeChallenge(verifier);
+
+      localStorage.setItem('verifier', verifier);
+
+      const params = new URLSearchParams();
+      params.append('client_id', clientId);
+      params.append('response_type', 'code');
+      params.append('redirect_uri', 'http://localhost:5173/artist');
+      params.append('scope', 'user-read-private user-read-email user-top-read');
+      params.append('code_challenge_method', 'S256');
+      params.append('code_challenge', challenge);
+
+      document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
     },
-    methods: {
-        async makeFavorite(artist) {
-            if (!this.authenticated) {
-                return;
-            }
-            try {
-                var response = await axios.put('user/setArtist/' + artist.guid);
-                var response = await axios.get('artist');
-                this.artists = response.data;
-            } catch {
-                alert('Fehler beim Setzen des favorite Artists.');
-            }
-        },
+    async getAccessToken(clientId, code) {
+      const verifier = localStorage.getItem('verifier');
+
+      const params = new URLSearchParams();
+      params.append('client_id', clientId);
+      params.append('grant_type', 'authorization_code');
+      params.append('code', code);
+      params.append('redirect_uri', 'http://localhost:5173/artist');
+      params.append('code_verifier', verifier);
+
+      const result = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params,
+      });
+
+      const { access_token } = await result.json();
+      return access_token;
     },
-    computed: {
-        authenticated() {
-            return this.$store.state.user != null;
-        },
-        userinfo() {
-            return this.$store.state.user;
-        },
-    },
+    generateCodeVerifier(length) {
+      let text = '';
+      let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+      for (let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+return text;
+},
+async generateCodeChallenge(verifier) {
+const hashedVerifier = await this.sha256(verifier);
+const base64Url = btoa(String.fromCharCode(...new Uint8Array(hashedVerifier)))
+  .replace('+', '-')
+  .replace('/', '_')
+  .replace(/=+$/, '');
+
+return base64Url;
+},
+async sha256(plain) {
+const encoder = new TextEncoder();
+const data = encoder.encode(plain);
+const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+return hashBuffer;
+},
+async fetchTopArtist(accessToken) {
+const result = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=10', {
+  headers: { Authorization: `Bearer ${accessToken}` },
+});
+
+const topArtists = await result.json();
+console.log(topArtists)
+return topArtists;
+},
+
+populateUI(topArtists) {
+this.topAritstsPic = topArtists.items.map((item) => item.images[0].url);
+this.topArtists = topArtists.items.map((item) => item.name);
+
+
+console.log(this.topArtists)
+console.log(this.topAritstsPic)
+},
+},
 };
 </script>

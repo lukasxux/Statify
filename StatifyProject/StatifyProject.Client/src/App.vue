@@ -11,13 +11,13 @@ import axios from 'axios';
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item mx-0 mx-lg-1">
-                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/song"><h5>Songs</h5></router-link>
+                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/song"><h5>Top Songs</h5></router-link>
                         </li>
                         <li class="nav-item mx-0 mx-lg-1">
-                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist"><h5>Artists</h5></router-link>
+                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist"><h5>Top Artists</h5></router-link>
                         </li>
                         <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
-                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/spotify"><h5>Spotify</h5></router-link>
+                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/my-account"><h5>My Account</h5></router-link>
                         </li>
                         <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
                             <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/login"><h5>Login</h5></router-link>
@@ -47,7 +47,7 @@ main {
 import HomeView from './views/HomeView.vue';
 import ArtistView from './views/ArtistView.vue';
 import SongView from './views/SongView.vue';
-import SpotifyView from './views/SpotifyView.vue'
+import MyAccountView from './views/MyAccountView.vue';
 
 export default {
     name: 'App',
@@ -55,7 +55,7 @@ export default {
         HomeView,
         ArtistView,
         SongView,
-        SpotifyView
+        MyAccountView
     },
     methods: {
         deleteToken() {

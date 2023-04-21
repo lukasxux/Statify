@@ -4,7 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import ArtistView from '../views/ArtistView.vue'
 import SongView from '../views/SongView.vue'
-import SpotifyView from '../views/SpotifyView.vue'
+import MyAccountView from '../views/MyAccountView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,9 +34,9 @@ const router = createRouter({
       component: SongView,
     },
     {
-      path: '/spotify',
-      name: 'spotify',
-      component: SpotifyView,
+      path: '/my-account',
+      name: 'my-account',
+      component: MyAccountView,
     },
 
   ]

@@ -4,106 +4,85 @@ import axios from 'axios';
 
 <template>
     <div class="songView">
-        <h1>Known Songs</h1>
-        <p v-if="authenticated">Click on the song to make this as your favorite!</p>
-        <p v-else>Please log in to set your favourite song.</p>
-        <div v-bind:class="{ songbox: true, favorite: s.isFavorite }" v-for="s in songs" v-bind:key="s.guid" v-on:click="makeFavorite(s)">
-            <div class="songimage"><img v-bind:src="s.imageUrl" /></div>
-            <div class="songinfo">
-                <div class="row1">
-                    <div class="songtitle"> <span class="me-3">{{ s.length }}</span><span class="title">{{ s.title }}</span></div>
-                    <div class="songlink">
-                        <a target="_blank" v-bind:href="s.link"> Watch on youtube </a>
-                    </div>
-                </div>
-                <div class="row2">Liked by {{ s.likedByCount }} Users</div>
-            </div>
-        </div>
-    </div>
+      <div class="container">
+        <h1 class="title">Top 10 Songs</h1>
+      
+        <section id="profile" class="profile-section">
+          <h2 class="subtitle">Logged in as <span class="display-name">{{ displayName }}</span></h2>
+          <div class="avatar-wrapper">
+            <img id="avatar" class="avatar" width="200" :src="avatarSrc" />
+          </div>
+          <ul class="profile-list">
+            <li><strong>Track 1:</strong> <span class="profile-info">{{ topTrackTitle[1] }} </span></li>
+            <li><strong>Track 2:</strong> <span class="profile-info">{{ topTrackTitle[2] }}  </span></li>
+            <li><strong>Track 3:</strong> <span class="profile-info">{{ topTrackTitle[3] }}  </span></li>
+            <li><strong>Track 4:</strong> <span class="profile-info">{{ topTrackTitle[4] }}  </span></li>
+            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[5] }}  </span></li>
+            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[6] }}  </span></li>
+            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[7] }}  </span></li>
+            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[8] }}  </span></li>
+            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[9] }} </span></li>
+            <li><strong>Track 5:</strong> <span class="profile-info">{{ topTrackTitle[10] }}  </span></li>
+          </ul>
+        </section>
+      </div>
+      </div>
+
 </template>
 
 <style scoped>
-table {
-    color: white;
+
+
+h1 {
+  color: #336699;
 }
 
-.textlink {
-    cursor: pointer;
+.top-10-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.songbox {
-    padding: 1em;
-    text-align: left;
-    margin-bottom: 1em;
-    display: flex;
-    gap: 1em;
+.top-10-list li {
+  margin: 20px;
+  width: 200px;
 }
 
-.songimage img {
-    width: 100px;
+.artist-name {
+  font-size: 18px;
+  margin-top: 10px;
 }
 
-.songbox:hover {
-    background-color: hsl(0, 0%, 21%);
-}
-
-.favorite {
-    border: 1px solid hsl(128, 100%, 20%);
-}
-
-.songinfo {
-    flex-grow: 1;
-}
-
-.songtitle {
-    flex-grow: 1;
-}
-
-.row1 {
-    display: flex;
-}
-
-.title {
-    font-size: 150%;
-}
-a {
-    text-decoration: none;
-    color: hsl(96, 100%, 50%);
-}
 </style>
 
 <script>
+
+
 export default {
-    data() {
-        return {
-            songs: [],
-        };
-    },
-    async mounted() {
-        var response = await axios.get('song');
-        this.songs = response.data;
-    },
-    methods: {
-        async makeFavorite(song) {
-            if (!this.authenticated) {
-                return;
-            }
-            try {
-                var response = await axios.put('user/setSong/' + song.guid);
-                var response = await axios.get('song');
-                this.songs = response.data;
-            } catch {
-                alert('Fehler beim Setzen des favorite songs.');
-            }
-        },
-    },
-    computed: {
-        authenticated() {
-            return this.$store.state.user != null;
-        },
-        userinfo() {
-            return this.$store.state.user;
-        },
-    },
+  data() {
+    return {
+      topTrackTitle: []
+    };
+  },
+  mounted() {
+    this.logToptracks();
+  },
+  methods: {
+   logToptracks(){
+    console.log("logToptracks");
+    const storedArrayString = sessionStorage.getItem('topTracks');
+    const retrievedArray = JSON.parse(storedArrayString);
+    this.topTrackTitle = retrievedArray.items.map((item) => item.name);
+    console.log(this.topTrackTitle);
+   },
+   }
 };
 </script>
+
+
+
+
+
+

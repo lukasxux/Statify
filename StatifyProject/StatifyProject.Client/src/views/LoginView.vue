@@ -7,7 +7,7 @@ import axios from 'axios';
         <template v-if="!authenticated">
             <div class="loginForm">
                 <div>Username:</div>
-                <div class="mb-2"><input type="text" v-model="model.username" /></div>
+                <div class="mb-2"><input type="text" v-model="model.username"/></div>
                 <div>Password:</div>
                 <div class="mb-2"><input type="password" v-model="model.password" /></div>
             </div>
