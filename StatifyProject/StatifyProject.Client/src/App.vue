@@ -4,28 +4,29 @@ import axios from 'axios';
 
 <template>
     <div class="bg-dark">
-        <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top" id="mainNav">
-            <div class="container">
-                <a class="navbar-brand text-light h1" href="/"> <h1>Statify</h1></a>
-                <p v-if="authenticated">Logged in as {{ username }}. <span class="logout" v-on:click="deleteToken()">Logout</span></p>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item mx-0 mx-lg-1">
-                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/song"><h5>Top Songs</h5></router-link>
-                        </li>
-                        <li class="nav-item mx-0 mx-lg-1">
-                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist"><h5>Top Artists</h5></router-link>
-                        </li>
-                        <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
-                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/my-account"><h5>My Account</h5></router-link>
-                        </li>
-                        <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
-                            <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/login"><h5>Login</h5></router-link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top">
+            <a class="navbar-brand text-light h1" style="padding-left: 30px;" href="/"> <h1>Statify</h1></a>
+    <p v-if="authenticated">Logged in as {{ username }}. <span class="logout" v-on:click="deleteToken()">Logout</span></p>
+    <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="border-color: white; style"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
+                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/song"><h5>Top Songs</h5></router-link>
+            </li>
+            <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
+                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist"><h5>Top Artists</h5></router-link>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/my-account"><h5>My Account</h5></router-link>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1" id="login">
+                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/login"><h5>Login</h5></router-link>
+            </li>
+        </ul>
+    </div>
+</nav>
         <main class="container">
             <router-view></router-view>
         </main>
@@ -41,6 +42,14 @@ main {
 .logout {
     opacity: 0.5;
     cursor: pointer;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-toggler {
+    border-color: white;
 }
 </style>
 <script>
@@ -72,6 +81,12 @@ export default {
         },
     },
 };
+$(function(){ 
+     var navMain = $("#navbarNav");
+     navMain.on("click", "a", null, function () {
+         navMain.collapse('hide');
+     });
+ });
 </script>
 
 

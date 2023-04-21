@@ -108,7 +108,6 @@ export default {
   const storedArrayString = sessionStorage.getItem('profile');
     const retrievedArray = JSON.parse(storedArrayString);
     console.log(retrievedArray);
-
     this.displayName = retrievedArray.display_name;
     this.avatarSrc = retrievedArray.images[0].url;
     this.id = retrievedArray.id;
@@ -116,8 +115,6 @@ export default {
     this.uri = retrievedArray.uri;
     this.url = retrievedArray.external_urls.spotify;
     this.imgUrl = retrievedArray.images[0].url;
-
-
  }
   }
 };
