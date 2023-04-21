@@ -163,7 +163,7 @@ export default {
                          },
 
                          updateProfilInfo(profile) {
-                                
+                                this.profile = profile.items.map((item) => item.display_name);
                          },
 
                          //---------------------------------Tracks---------------------------------
@@ -180,8 +180,6 @@ export default {
                                  sessionStorage.setItem('topTracks', JSON.stringify(topTracks));
 
                                  return topTracks;
-
-
 
                              },
 

@@ -116,7 +116,7 @@ export default {
     this.uri = retrievedArray.uri;
     this.url = retrievedArray.external_urls.spotify;
     this.imgUrl = retrievedArray.images[0].url;
-   
+
 
  }
   }
