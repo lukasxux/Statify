@@ -4,33 +4,45 @@ import axios from 'axios';
 
 <template>
     <div class="bg-dark">
-        <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top">
-            <a class="navbar-brand text-light h1" style="padding-left: 30px;" href="/"> <h1>Statify</h1></a>
-    <p v-if="authenticated">Logged in as {{ username }}. <span class="logout" v-on:click="deleteToken()">Logout</span></p>
-    <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon" style="border-color: white; style"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
-                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/song"><h5>Top Songs</h5></router-link>
+   <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top">
+      <a class="navbar-brand text-light h1" id="logo" href="/">
+         <h1>Statify</h1>
+      </a>
+      <p v-if="authenticated">Logged in as {{ username }}. <span class="logout" v-on:click="deleteToken()">Logout</span></p>
+      <div id="navbarCollapse">
+         <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon" id="navbarIcon"></span>
+         </button>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+         <ul class="navbar-nav ml-auto">
+            <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1" id="padding-left">
+               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/song">
+                  <h5>Top Songs</h5>
+               </router-link>
             </li>
-            <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1">
-                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist"><h5>Top Artists</h5></router-link>
+            <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1" id="padding-left">
+               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist">
+                  <h5>Top Artists</h5>
+               </router-link>
             </li>
-            <li class="nav-item mx-0 mx-lg-1">
-                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/my-account"><h5>My Account</h5></router-link>
+            <li class="nav-item mx-0 mx-lg-1" id="padding-left">
+               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/my-account">
+                  <h5>My Account</h5>
+               </router-link>
             </li>
             <li class="nav-item mx-0 mx-lg-1" id="login">
-                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/login"><h5>Login</h5></router-link>
+               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/login">
+                  <h5>Login</h5>
+               </router-link>
             </li>
-        </ul>
-    </div>
-</nav>
-        <main class="container">
-            <router-view></router-view>
-        </main>
-    </div>
+         </ul>
+      </div>
+   </nav>
+   <main class="container">
+      <router-view></router-view>
+   </main>
+</div>
 </template>
 
 <style>
@@ -50,6 +62,29 @@ main {
 
 .navbar-toggler {
     border-color: white;
+}
+
+#padding-left {
+
+    padding-left: 30px;
+}
+
+#navbarCollapse {
+   padding-right: 20px;
+
+}
+
+#logo {
+   padding-left: 30px;
+}
+
+#navbarIcon {
+   border-color: white;
+}
+
+#login {
+   padding-left: 30px; 
+   padding-right: 20px;
 }
 </style>
 <script>

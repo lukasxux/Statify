@@ -4,7 +4,7 @@
     <div class="container min-vh-100 d-flex justify-content-center align-items-center bg-dark">
         <div class="row ">
             <div class="col">
-                <img class="img-fluid p-5" src="../assets/img/StatifyLogo.jpg" alt="" />
+                <img class="img-fluid p-5" src="../assets/img/StatifyLogo.png" alt="" />
             </div>
             <div
                 class=" col text-white d-flex justify-content-center align-items-center "

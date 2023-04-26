@@ -1,24 +1,45 @@
-
-
 <template>
-    <div class="button-card" @click="fetchProfileData">
+    <div class="button-container">
+      <div class="button-card" @click="fetchProfileData">
         <a href="#" class="spotify-button">
-            <span class="spotify-icon"></span>
-            <span class="spotify-text">Login using Spotify</span>
-          </a>
+          <span class="spotify-icon"></span>
+          <span class="spotify-text">Login using Spotify</span>
+        </a>
+      </div>
+  
+      <div class="button-card" @click="fetchProfileData">
+        <a href="#" class="spotify-button">
+          <span class="statify-icon"></span>
+          <span class="spotify-text">Login using Statify</span>
+        </a>
+      </div>
     </div>
-
-</template>
-
-<style scoped>
-
-.button-card {
+  </template>
+  
+  <style scoped>
+  .button-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
     height: 80vh; /* Set the height of the container to make it center vertically */
   }
-.spotify-button {
+  
+  .statify-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-image: url(../assets/img/StatifyLogo.png); /* Replace with your own Statify icon */
+    background-size: cover;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .button-card {
+    margin-bottom: 20px; /* Add margin-bottom to create space between the buttons */
+  }
+  
+  .spotify-button {
     display: inline-block;
     background-color: #1db954;
     color: #fff;
@@ -47,8 +68,8 @@
   .spotify-text {
     vertical-align: middle;
   }
+  </style>
   
-</style>
 
 <script>
 export default {
@@ -77,7 +98,6 @@ export default {
              const topTracks = await this.fetchTopTracks(accessToken);
              const topArist = await this.fetchTopArtist(accessToken);
              this.updateProfilInfo(profile);
-             console.log("Hello");
              this.updateTopTracks(topTracks);
              this.updateTopArtist(topArist);
          }
