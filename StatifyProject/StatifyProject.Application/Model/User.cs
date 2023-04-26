@@ -11,7 +11,7 @@
     [Index(nameof(Email), IsUnique = true)]
     public class User
     {
-        public User(string username, string email, string initialPassword, DateTime created_at, Song? favoriteSong = null, Artist? favoriteArtist = null)
+        public User(string username, string email, string initialPassword, DateTime created_at, String? favoriteSong = null, String? favoriteArtist = null)
         {
             Username = username;
             Email = email;
@@ -20,8 +20,6 @@
             FavoriteSong = favoriteSong;
             FavoriteArtist = favoriteArtist;
         }
-
-
 
 #pragma warning disable CS8618
         protected User() { }
@@ -40,8 +38,8 @@
         [MaxLength(50)]
  
         public DateTime Created_at { get; set; }
-        public Song? FavoriteSong { get; set; }
-        public Artist? FavoriteArtist { get; set; }
+        public String? FavoriteSong { get; set; }
+        public String? FavoriteArtist { get; set; }
         public string Salt { get; set; }
         public string PasswordHash { get; set; }
 

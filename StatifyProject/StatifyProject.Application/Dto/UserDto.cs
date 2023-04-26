@@ -22,11 +22,13 @@ namespace StatifyProject.Application.Dto
             Guid FavoriteSongGuid,
 
             Guid FavoriteArtistGuid
-        ) : IValidatableObject
+        ) 
+        //: IValidatableObject
         
 
 
     {
+        /*
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var db = validationContext.GetRequiredService<StatifyContext>();
@@ -39,5 +41,7 @@ namespace StatifyProject.Application.Dto
                 yield return new ValidationResult("Artist does not exist", new[] { nameof(FavoriteArtistGuid) });
             }
         }
-    }
+    */
+        }
+
 }

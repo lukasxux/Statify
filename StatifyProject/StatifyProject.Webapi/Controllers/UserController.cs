@@ -90,11 +90,7 @@ public class UserController : ControllerBase
         return Ok(new
         {
             user.Username,
-            user.Email,
-            FavoriteArtistGuid = user.FavoriteArtist?.Guid,
-            FavoriteArtistName = user.FavoriteArtist?.Name,
-            FavoriteSongGuid = user.FavoriteArtist?.Guid,
-            FavoriteSongTitle = user.FavoriteSong?.Title
+            user.Email
         });
     }
 
@@ -118,30 +114,5 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpPut("setSong/{guid:Guid}")]
-    public IActionResult SetFavoriteSong(Guid guid)
-    {
-        var username = HttpContext?.User.Identity?.Name;
-        if (username is null) { return Unauthorized(); }
-        var user = _db.Users.FirstOrDefault(a => a.Username == username);
-        if (user is null) { return Unauthorized(); }
-        var song = _db.Songs.FirstOrDefault(s => s.Guid == guid);
-        if (song is null) { return NotFound(); }
-        user.FavoriteSong = song;
-        _db.SaveChanges();
-        return NoContent();
-    }
-    [HttpPut("setArtist/{guid:Guid}")]
-    public IActionResult SetFavoriteArtist(Guid guid)
-    {
-        var username = HttpContext?.User.Identity?.Name;
-        if (username is null) { return Unauthorized(); }
-        var user = _db.Users.FirstOrDefault(a => a.Username == username);
-        if (user is null) { return Unauthorized(); }
-        var artist = _db.Artists.FirstOrDefault(a => a.Guid == guid);
-        if (artist is null) { return NotFound(); }
-        user.FavoriteArtist = artist;
-        _db.SaveChanges();
-        return NoContent();
-    }
+    
 }
