@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import ArtistView from '../views/ArtistView.vue'
 import SongView from '../views/SongView.vue'
 import MyAccountView from '../views/MyAccountView.vue'
+import AboutView from '../views/AboutView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,11 @@ const router = createRouter({
       path: '/my-account',
       name: 'my-account',
       component: MyAccountView,
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView,
     },
 
   ]

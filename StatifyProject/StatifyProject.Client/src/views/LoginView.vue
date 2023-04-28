@@ -12,14 +12,6 @@ import axios from 'axios';
         <span class="spotify-text">Login using Spotify</span>
       </a>
     </div>
-    
-
-    <div class="button-card" @click="fetchProfileData">
-      <a href="#" class="spotify-button">
-        <span class="statify-icon"></span>
-        <span class="spotify-text"> Login using Statify</span>
-      </a>
-    </div>
   </div>
   </template>
   
@@ -111,10 +103,6 @@ import axios from 'axios';
                 }
             }
           },
-        
-
-
-
 
         //------------------------------------Spotify------------------------------------
         // Update the data properties 
@@ -132,7 +120,7 @@ import axios from 'axios';
             this.updateProfilInfo(profile);
             this.updateTopTracks(topTracks);
             this.updateTopArtist(topArist);
-          }
+          } 
         },
         //---------------------------------Authentication---------------------------------
         async redirectToAuthCodeFlow(clientId) {
@@ -239,7 +227,7 @@ import axios from 'axios';
         },
         //---------------------------------Artist---------------------------------
         async fetchTopArtist(accessToken) {
-          const result = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=10', {
+          const result = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=20', {
             headers: {
               Authorization: `Bearer ${accessToken}`
             },

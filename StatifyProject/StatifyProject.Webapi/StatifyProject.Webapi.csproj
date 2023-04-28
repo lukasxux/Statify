@@ -13,10 +13,6 @@
 
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="wwwroot\" />
-	</ItemGroup>
-
 	<ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://citation-file-format.github.io/1.2.0/schema.json" /></VisualStudio></ProjectExtensions>
 	
 </Project>

@@ -6,7 +6,8 @@ import axios from 'axios';
     <div class="bg-dark">
    <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top">
       <a class="navbar-brand text-light h1" id="logo" href="/">
-         <h1>Statify</h1>
+         <h1><span style="color: #1db954;">S</span><span style="color: #1db954;">t</span><span style="color: #1db954;">a</span><span style="color: #1db954;">t</span>ify</h1>
+
       </a>
       <p v-if="authenticated">Logged in as {{ username }}. <span class="logout" v-on:click="deleteToken()">Logout</span></p>
       <div id="navbarCollapse">
@@ -18,17 +19,17 @@ import axios from 'axios';
          <ul class="navbar-nav ml-auto">
             <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1" id="padding-left">
                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/song">
-                  <h5>Top Songs</h5>
+                  <h5><span style="color: #1db954;">Top</span> Songs</h5>
                </router-link>
             </li>
             <li v-if="!authenticated" class="nav-item mx-0 mx-lg-1" id="padding-left">
                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist">
-                  <h5>Top Artists</h5>
+                  <h5><span style="color: #1db954;">Top</span> Artists</h5>
                </router-link>
             </li>
             <li class="nav-item mx-0 mx-lg-1" id="padding-left">
                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/my-account">
-                  <h5>My Account</h5>
+                  <h5><span style="color: #1db954;">My</span> Account</h5>
                </router-link>
             </li>
             <li class="nav-item mx-0 mx-lg-1" id="login">
