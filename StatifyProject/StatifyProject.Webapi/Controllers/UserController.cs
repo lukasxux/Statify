@@ -1,118 +1,141 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
-using Microsoft.Extensions.Configuration;
-using StatifyProject.Application.Infrastructure;
 using System.Linq;
+using StatifyProject.Application.Model;
+using StatifyProject.Application.Dto;
+using StatifyProject.Application.Infrastructure;
 
-[Route("api/[controller]")]
-[ApiController]
-[AllowAnonymous]
-public class UserController : ControllerBase
+namespace StatifyProject.Controllers
 {
-    // DTO class for the JSON body of the login request
-    public record CredentialsDto(string username, string password);
-
-    private readonly StatifyContext _db;
-    private readonly IConfiguration _config;  // Needed to read the secret from appsettings.json
-    public UserController(StatifyContext db, IConfiguration config)
+    [ApiController]
+    [Route("api/users")]
+    public class UserController : ControllerBase
     {
-        _db = db;
-        _config = config;
-    }
+        private readonly ILogger<UserController> _logger;
+        private readonly StatifyContext _context;
 
-    /// <summary>
-    /// POST /api/user/login
-    /// </summary>
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] CredentialsDto credentials)
-    {
-        // Read the secret from appsettings.json via IConfiguration
-        // This is NOT the salt of the user password! It is the key to sign the JWT, so
-        // the client cannot manupulate our token.
-        var secret = Convert.FromBase64String(_config["Secret"]);
-        var lifetime = TimeSpan.FromHours(3);
-        // User exists in our database and the calculated hash matches
-        // the password hash in the database?
-        var user = _db.Users.FirstOrDefault(a => a.Username == credentials.username);
-        if (user is null) { return Unauthorized(); }
-        if (!user.CheckPassword(credentials.password)) { return Unauthorized(); }
-
-        string role = "Admin";  // TODO: Set your role based on your rules.
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenDescriptor = new SecurityTokenDescriptor
+        public UserController(ILogger<UserController> logger, StatifyContext context)
         {
-            // Payload for our JWT.
-            Subject = new ClaimsIdentity(new Claim[]
+            _logger = logger;
+            _context = context;
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetUserById(int id)
+        {
+            try
             {
-                // Write username to the claim (the "data zone" of the JWT).
-                new Claim(ClaimTypes.Name, user.Username.ToString()),
-                // Write the role to the claim (optional)
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, role)
-            }),
-            Expires = DateTime.UtcNow + lifetime,
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(secret),
-                SecurityAlgorithms.HmacSha256Signature)
-        };
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        // Return the token so the client can save this to send a bearer token in the
-        // subsequent requests.
-        return Ok(new
-        {
-            user.Username,
-            UserGuid = user.Guid,
-            Role = role,
-            Token = tokenHandler.WriteToken(token)
-        });
-    }
+                var user = _context.Users.FirstOrDefault(u => u.Id == id);
 
-    /// <summary>
-    /// GET /api/user/me
-    /// Gets information about the current (authenticated) user.
-    /// </summary>
-    [Authorize]
-    [HttpGet("me")]
-    public IActionResult GetUserdata()
-    {
-        // No username is set in HttpContext? Should never occur because we added the
-        // Authorize annotation. But the properties are nullable, so we have to check.
-        var username = HttpContext?.User.Identity?.Name;
-        if (username is null) { return Unauthorized(); }
+                if (user == null)
+                {
+                    return NotFound();
+                }
 
-        // Valid token, but no user match in the database (maybe deleted by an admin).
-        var user = _db.Users.FirstOrDefault(a => a.Username == username);
-        if (user is null) { return Unauthorized(); }
-        return Ok(new
-        {
-            user.Username,
-            user.Email
-        });
-    }
+                var userDto = new UserDto(
+                    user.Guid,
+                    user.Username,
+                    user.Email,
+                    user.PasswordHash,
+                    user.FavoriteSong?.ToString() ?? string.Empty,
+                    user.FavoriteArtist?.ToString() ?? string.Empty,
+                    user.Bio ?? string.Empty
+                );
 
-    /// <summary>
-    /// GET /api/user/all
-    /// List all users.
-    /// Only for users which has the role admin in the claim of the JWT.
-    /// </summary>
-    [Authorize(Roles = "Admin")]
-    [HttpGet("all")]
-    public IActionResult GetAllUsers()
-    {
-        var user = _db.Users
-            .Select(a => new
+
+
+
+                return Ok(userDto);
+            }
+            catch (Exception ex)
             {
-                a.Username,
-                a.Email
-            })
-            .ToList();
-        if (user is null) { return BadRequest(); }
-        return Ok(user);
-    }
+                _logger.LogError(ex, "Error occurred while getting user by ID.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
 
-    
+        [HttpPost]
+        public IActionResult CreateUser([FromBody] UserDto userDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var user = new User(userDto.Username, userDto.Email, userDto.Password, DateTime.UtcNow, userDto.Bio, userDto.FavoriteSongGuid, userDto.FavoriteArtistGuid);
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while creating user.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                user.Username = userDto.Username;
+                user.Email = userDto.Email;
+                user.SetPassword(userDto.Password);
+                user.FavoriteSong = userDto.FavoriteSongGuid;
+                user.FavoriteArtist = userDto.FavoriteArtistGuid;
+                user.Bio = userDto.Bio;
+
+                _context.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while updating user.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            try
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while deleting user.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+    }
 }

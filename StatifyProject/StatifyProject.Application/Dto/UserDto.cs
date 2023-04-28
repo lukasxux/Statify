@@ -8,40 +8,44 @@ using System.Linq;
 namespace StatifyProject.Application.Dto
 {
     public record UserDto(
-        Guid Guid,
+     Guid Guid,
 
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "Länge des Usernames ist ungültig.")]
-        string username,
+     [StringLength(20, MinimumLength = 2, ErrorMessage = "Länge des Usernames ist ungültig.")]
+    string Username,
 
-            [StringLength(255, MinimumLength = 3, ErrorMessage = "Die Länge der Email ist ungültig.")]
-            string Email,
+     [StringLength(50, MinimumLength = 3, ErrorMessage = "Die Länge der Email ist ungültig.")]
+    string Email,
 
-            [StringLength(255, MinimumLength = 7, ErrorMessage = "Die Länge des Passworts ist ungültig.")]
-            string password,
+     [StringLength(255, MinimumLength = 6, ErrorMessage = "Die Länge des Passworts ist ungültig.")]
+    string Password,
 
-            Guid FavoriteSongGuid,
+     [StringLength(255, MinimumLength = 1, ErrorMessage = "Die Länge der Bio ist ungültig.")]
+    string Bio,
 
-            Guid FavoriteArtistGuid
-        ) 
-        //: IValidatableObject
-        
+     string FavoriteSongGuid,
+
+     string FavoriteArtistGuid
+ );
+
+    //: IValidatableObject
 
 
+
+
+    /*
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        /*
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        var db = validationContext.GetRequiredService<StatifyContext>();
+        if (!db.Songs.Any(a => a.Guid == FavoriteSongGuid))
         {
-            var db = validationContext.GetRequiredService<StatifyContext>();
-            if (!db.Songs.Any(a => a.Guid == FavoriteSongGuid))
-            {
-                yield return new ValidationResult("Song does not exist", new[] { nameof(FavoriteSongGuid) });
-            }
-            if (!db.Artists.Any(c => c.Guid == FavoriteArtistGuid))
-            {
-                yield return new ValidationResult("Artist does not exist", new[] { nameof(FavoriteArtistGuid) });
-            }
+            yield return new ValidationResult("Song does not exist", new[] { nameof(FavoriteSongGuid) });
         }
-    */
+        if (!db.Artists.Any(c => c.Guid == FavoriteArtistGuid))
+        {
+            yield return new ValidationResult("Artist does not exist", new[] { nameof(FavoriteArtistGuid) });
         }
-
+    }
+*/
 }
+
+
