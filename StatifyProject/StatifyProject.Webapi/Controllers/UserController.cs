@@ -32,20 +32,16 @@ namespace StatifyProject.Controllers
                 {
                     return NotFound();
                 }
-
                 var userDto = new UserDto(
                     user.Guid,
                     user.Username,
                     user.Email,
                     user.PasswordHash,
+                    user.Bio ?? string.Empty,
                     user.FavoriteSong?.ToString() ?? string.Empty,
                     user.FavoriteArtist?.ToString() ?? string.Empty,
-                    user.Bio ?? string.Empty
+                    user.Role
                 );
-
-
-
-
                 return Ok(userDto);
             }
             catch (Exception ex)
@@ -55,6 +51,62 @@ namespace StatifyProject.Controllers
             }
         }
 
+        /*
+        [HttpGet("{username}")]
+        public IActionResult GetUserByUsername(String Username)
+        {
+            try
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Username == Username);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var userDto = new UserDto(
+                    user.Guid,
+                    user.Username,
+                    user.Email,
+                    user.PasswordHash,
+                    user.FavoriteSong?.ToString() ?? string.Empty,
+                    user.FavoriteArtist?.ToString() ?? string.Empty,
+                    user.Bio ?? string.Empty,
+                    user.Role
+                );
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while getting user by ID.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+        */
+
+        [HttpGet]
+        public IActionResult GetUsers()
+        {
+            try
+            {
+                var users = _context.Users.ToList();
+
+                if (users == null || users.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while getting users.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+
+        
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserDto userDto)
         {
@@ -65,7 +117,7 @@ namespace StatifyProject.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var user = new User(userDto.Username, userDto.Email, userDto.Password, DateTime.UtcNow, userDto.Bio, userDto.FavoriteSongGuid, userDto.FavoriteArtistGuid);
+                var user = new User(userDto.Username, userDto.Email, userDto.Password, DateTime.UtcNow, userDto.Bio, userDto.Role, userDto.FavoriteSong, userDto.FavoriteArtist);
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
@@ -79,6 +131,7 @@ namespace StatifyProject.Controllers
             }
         }
 
+        
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
         {
@@ -93,15 +146,14 @@ namespace StatifyProject.Controllers
 
                 if (user == null)
                 {
-                    return NotFound();
+                    return NotFound();  //string username, string email, string initialPassword, DateTime created_at, string bio, UserRole role, string? favoriteSong = null, string? favoriteArtist = null
                 }
-
                 user.Username = userDto.Username;
                 user.Email = userDto.Email;
                 user.SetPassword(userDto.Password);
-                user.FavoriteSong = userDto.FavoriteSongGuid;
-                user.FavoriteArtist = userDto.FavoriteArtistGuid;
                 user.Bio = userDto.Bio;
+                user.FavoriteSong = userDto.FavoriteSong;
+                user.FavoriteArtist = userDto.FavoriteArtist;
 
                 _context.SaveChanges();
 
@@ -113,6 +165,7 @@ namespace StatifyProject.Controllers
                 return StatusCode(500, "Internal server error.");
             }
         }
+        
 
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
@@ -129,7 +182,7 @@ namespace StatifyProject.Controllers
                 _context.Users.Remove(user);
                 _context.SaveChanges();
 
-                return Ok();
+                return Ok("ok");
             }
             catch (Exception ex)
             {

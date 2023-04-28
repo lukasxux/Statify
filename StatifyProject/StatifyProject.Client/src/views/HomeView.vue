@@ -13,9 +13,6 @@
                     <h1>Welcome to Statify</h1>
                     <h3>Manage your favorite Songs and Artists.</h3>
                 </div>
-                    
-                    
-                
             </div>
         </div>
     </div>

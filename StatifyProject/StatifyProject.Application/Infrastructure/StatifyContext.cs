@@ -55,9 +55,11 @@ namespace StatifyProject.Application.Infrastructure
                   email: $"{username}@mail.at",
                   initialPassword: "1111",
                   created_at: new DateTime(2022, 1, 1),
+                  role: UserRole.User,
                   bio: "Beschreibung Beschreibung aöoishlfdsalhda",
                   favoriteSong: "FavSong",
                   favoriteArtist: "FavArtist")
+                
 
                 { Guid = f.Random.Guid() };
             })
@@ -72,7 +74,7 @@ namespace StatifyProject.Application.Infrastructure
         {
             Randomizer.Seed = new Random(1037);
             var faker = new Faker("de");
-          
+
 
             var users = new Faker<User>("de").CustomInstantiator(f =>
             {
@@ -82,9 +84,11 @@ namespace StatifyProject.Application.Infrastructure
                   email: $"{username}@mail.at",
                   initialPassword: "1111",
                   created_at: f.Date.Between(new DateTime(2021, 1, 1), new DateTime(2022, 1, 1)),
+                  role: UserRole.User,
                   bio: "Beschreibung: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a nisl lobortis, malesuada urna quis.",
                   favoriteSong: "FavSong",
-                  favoriteArtist: "FavArtist")
+                  favoriteArtist: "FavArtist"
+                  )
                   
 
                 { Guid = f.Random.Guid() };

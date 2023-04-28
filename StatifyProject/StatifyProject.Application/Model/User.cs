@@ -11,7 +11,7 @@
     [Index(nameof(Email), IsUnique = true)]
     public class User
     {
-        public User(string username, string email, string initialPassword, DateTime created_at, string bio, string? favoriteSong = null, string? favoriteArtist = null)
+        public User(string username, string email, string initialPassword, DateTime created_at, string bio, UserRole role, string? favoriteSong = null, string? favoriteArtist = null)
         {
             Username = username;
             Email = email;
@@ -20,6 +20,7 @@
             FavoriteSong = favoriteSong;
             FavoriteArtist = favoriteArtist;
             Bio = bio;
+            Role = role;
             
         }
 
@@ -43,6 +44,7 @@
         public String? FavoriteSong { get; set; }
         public String? FavoriteArtist { get; set; }
         public String? Bio { get; set; }
+        public UserRole Role { get; set; }
         public string Salt { get; set; }
         public string PasswordHash { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StatifyProject.Application.Infrastructure;
+using StatifyProject.Application.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,9 +23,11 @@ namespace StatifyProject.Application.Dto
      [StringLength(255, MinimumLength = 1, ErrorMessage = "Die Länge der Bio ist ungültig.")]
     string Bio,
 
-     string FavoriteSongGuid,
+     string? FavoriteSong,
 
-     string FavoriteArtistGuid
+     string? FavoriteArtist,
+
+     UserRole Role
  );
 
     //: IValidatableObject
