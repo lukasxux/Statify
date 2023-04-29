@@ -2,9 +2,7 @@
 import axios from 'axios';
 </script>
 
-
 <template>
-
   <div class="button-container">
     <div class="button-card" @click="fetchProfileData">
       <a href="#" class="spotify-button">
@@ -12,10 +10,48 @@ import axios from 'axios';
         <span class="spotify-text">Login using Spotify</span>
       </a>
     </div>
+    <div id="or">
+      <span><h5 id="or-text">or</h5></span>
+    </div>
+    <div class="button-card" @click="sendLoginData">
+      <a href="#" class="spotify-button">
+        <span class="spotify-icon"></span>
+        <span class="spotify-text">Login using Statify</span>
+      </a>
+    </div>
   </div>
   </template>
   
   <style scoped>
+  #or-text{
+    font-weight: bold;
+    font-size: 18px;
+    color: #ffffff94;
+    text-transform: uppercase;
+  }
+  #or {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  #or::before,
+  #or::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ffffff94;
+    margin: 0 10px;
+  }
+  
+  #or span {
+    font-weight: bold;
+    font-size: 18px;
+    color: #666;
+    text-transform: uppercase;
+    margin: 0 10px;
+  }
   .button-container {
     display: flex;
     flex-direction: column;
@@ -35,7 +71,7 @@ import axios from 'axios';
   }
   
   .button-card {
-    margin-bottom: 20px; /* Add margin-bottom to create space between the buttons */
+    margin: 30px; /* Add margin-bottom to create space between the buttons */
   }
   
   .spotify-button {

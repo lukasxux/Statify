@@ -24,14 +24,14 @@ import axios from 'axios';
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(track, index) in topTracks" :key="track.id">
+            <tr v-for="(track, index) in topTracks" :key="track.id" @click="navigateToTrack(track)">
               <td>{{ index + 1 }}</td>
               <td><img :src="track.album.images[1].url" alt="" /></td>
               <td>{{ track.name }}</td>
               <td>{{ track.artists[0].name }}</td>
               <td>{{ formatDate(track.album.release_date) }}</td>
             </tr>
-          </tbody>
+          </tbody>          
         </table>
       </section>
     </div>
@@ -58,6 +58,20 @@ export default {
       console.log(retrievedArray);
       this.topTracks = retrievedArray.items;
     },
+    navigateToTrack(track) {
+    const trackLink = this.getTrackLink(track);
+    if (trackLink) {
+      const linkEl = document.createElement('a');
+      linkEl.href = trackLink;
+      linkEl.target = '_blank';
+      linkEl.click();
+    }
+  },
+  getTrackLink(track) {
+    console.log(track);
+      return track.external_urls.spotify;
+  }
+    ,
     formatDate(dateString) {
       const date = new Date(dateString);
       const options = { year: 'numeric', month: 'short', day: 'numeric' };

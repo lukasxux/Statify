@@ -6,7 +6,7 @@
           <img id="avatar" class="avatar" width="200" :src="avatarSrc" />
         </div>
         <ul class="profile-list">
-          <tr v-for="(Artist, index) in topArtists" :key="Artist.name">
+          <tr v-for="(Artist, index) in topArtists" :key="Artist.name" @click="navigateToArtist(Artist)">
             <div class="card" :id="'card'+index+1">
               <img :src="Artist.images[0].url" alt="Famous artist">
               <div class="card-text">
@@ -108,7 +108,19 @@ export default {
       console.log(retrievedArray);
       this.topArtists = retrievedArray.items;
   },
-
+  navigateToArtist(artist) {
+    const artistLink = this.getArtistLink(artist);
+    if (artistLink) {
+      const linkEl = document.createElement('a');
+      linkEl.href = artistLink;
+      linkEl.target = '_blank';
+      linkEl.click();
+    }
+  },
+  getArtistLink(artist) {
+    console.log(artist);
+      return artist.external_urls.spotify;
+  },
 },
 };
 </script>
