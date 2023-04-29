@@ -13,11 +13,11 @@ import axios from 'axios';
     <div id="or">
       <span><h5 id="or-text">or</h5></span>
     </div>
-    <div class="button-card" @click="sendLoginData">
-      <a href="#" class="spotify-button">
+    <div class="button-card" @click="StatifyLogin">
+      <router-link to="/about" class="spotify-button">
         <span class="spotify-icon"></span>
         <span class="spotify-text">Login using Statify</span>
-      </a>
+      </router-link>
     </div>
   </div>
   </template>
@@ -127,18 +127,14 @@ import axios from 'axios';
         this.message = "";
       },
       methods: {
-        async sendLoginData(){
-          try{
-            const userdata = (await axios.post('users/login', this.model)).data;
-                axios.defaults.headers.common['Authorization'] = `Bearer ${userdata.token}`;
-                this.$store.commit('authenticate', userdata);
-                this.message = `User ${userdata.username} logged in.`;
-            } catch (e) {
-                if (e.response.status == 401) {
-                    alert('Login failed. Invalid credentials.');
-                }
-            }
+        sendLoginData(){
+          
           },
+
+
+
+
+
 
         //------------------------------------Spotify------------------------------------
         // Update the data properties 

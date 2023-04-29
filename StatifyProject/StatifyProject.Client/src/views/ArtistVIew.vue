@@ -18,7 +18,6 @@
         </ul>
       </section>
     </div>
-      
 </template>
 
 <style scoped>
@@ -58,6 +57,13 @@
   overflow: hidden;
   background-color: #1db9542a;
   color: #ffffff;
+
+  transition: transform 0.5s ease; /* Add transition effect */
+}
+
+.card:hover {
+  transform: scale(1.05);
+
 }
 
 .card img {
@@ -85,6 +91,7 @@
 
 
 
+
 </style>
 
 <script>
@@ -101,8 +108,7 @@ export default {
   },
   methods: {
    logTopArtist(){
-      
-          const storedArrayString = sessionStorage.getItem('topArtists');
+      const storedArrayString = sessionStorage.getItem('topArtists');
       const retrievedArray = JSON.parse(storedArrayString);
       console.log("retrievedArray");
       console.log(retrievedArray);
