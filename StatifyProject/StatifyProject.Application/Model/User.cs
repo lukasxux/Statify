@@ -48,14 +48,6 @@
         public string Salt { get; set; }
         public string PasswordHash { get; set; }
 
-
-        [MemberNotNull(nameof(Salt), nameof(PasswordHash))]
-        public void SetPassword(string password)
-        {
-            Salt = GenerateRandomSalt();
-            PasswordHash = CalculateHash(password, Salt);
-        }
-        public bool CheckPassword(string password) => PasswordHash == CalculateHash(password, Salt);
         /// <summary>
         /// Generates a random number with the given length of bits.
         /// </summary>
@@ -71,6 +63,15 @@
             }
             return Convert.ToBase64String(salt);
         }
+
+        [MemberNotNull(nameof(Salt), nameof(PasswordHash))]
+        public void SetPassword(string password)
+        {
+            this.Salt = GenerateRandomSalt();
+            PasswordHash = CalculateHash(password, Salt);
+        }
+        public bool CheckPassword(string password) => PasswordHash == CalculateHash(password, Salt);
+        
 
         /// <summary>
         /// Calculates a HMACSHA256 hash value with a given salt.

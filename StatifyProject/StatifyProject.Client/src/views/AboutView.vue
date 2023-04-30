@@ -3,47 +3,54 @@ import axios from 'axios';
 </script>
 
 <template>
-  <div class="StatifyAccountView" >
-  <div class="login-container">
-    <h1>Login</h1>
-    
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email">
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password">
-      </div>
-      <button type="submit">Log in</button>
+  <div class="StatifyAccountView">
+    <div v-if="!loggedIn" class="login-container">
+      <h1>Login</h1>
+      <form @submit.prevent="loginUser">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" v-model="model.email" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" v-model="model.password" />
+        </div>
+        <button type="submit">Log in</button>
+      </form>
+    </div>
 
-  </div>
+    <div v-else class="user-info">
+      <p>Welcome, {{ user.username }}!</p>
+      <p>Username: {{ user.username }}</p>
+      <p>Email: {{ user.email }}</p>
+      <p>Favorite Song: {{ user.favoriteSong }}</p>
+      <p>Favorite Artist: {{ user.favoriteArtist }}</p>
+      <button @click="logoutUser">Log out</button>
+    </div>
 
-  <div id="or">
-    <span><h5 id="or-text">or</h5></span>
+    <div v-if="!loggedIn" id="or">
+      <span><h5 id="or-text">or</h5></span>
+    </div>
+
+    <div v-if="!loggedIn" class="registration-container">
+      <h1>Register</h1>
+      <form @submit.prevent="registerUser">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username" v-model="regmodel.regUsername" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" v-model="regmodel.regEmail" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" v-model="regmodel.regPassword" />
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
   </div>
-  
-  <div class="registration-container">
-    <h1>Register</h1>
-  
-    <div class="form-group">
-      <label for="username">Username:</label>
-      <input type="text" id="username">
-    </div>
-    
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email">
-    </div>
-    
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password">
-    </div>
-    
-    <button type="submit">Register</button>
-  </div>
-</div>
 </template>
 
 <style>
@@ -185,23 +192,67 @@ button[type="submit"] {
 
 
 <script>
-
-
 export default {
   data() {
     return {
-      model() {
-        return {
-          email: 'username',
-          password: 'password',
-        };
+      regmodel: {
+        regusername: '',
+        regemail: '',
+        regpassword: '',
       },
+      model: {
+        email: '',
+        password: '',
+      },
+      loggedIn: false,
+      userguid: {},
+      user: {},
+
     };
   },
-  mounted() {
-    
-  },
   methods: {
+    async registerUser() {
+      try {
+        const response = await axios.post('https://localhost:5001/api/users', {
+          username: this.regmodel.regUsername,
+          email: this.regmodel.regEmail,
+          password: this.regmodel.regPassword,
+          bio: 'bio',
+        });
+        alert('Registration successful!');
+      } catch (error) {
+        console.error(error);
+        alert('Registration failed.');
+      }
+    },
+    async UpdateUserData(){
+      const response3 = await axios.get("https://localhost:5001/api/users"+this.userguid);
+      console.log(response3.data);
+      user = response3;
+      
+      console.log(this.user);
+    },
+    async loginUser() {
+
+      try {
+        const response2 = await axios.post('https://localhost:5001/api/users/login', {
+          email: this.model.email,
+          password: this.model.password,
+        });
+        console.log(response2.data);
+        this.userguid = response2.data.userguid;
+        this.loggedIn = true;
+        await this.UpdateUserData();
+        alert('Login successful!');
+      } catch (error) {
+        console.error(error);
+        alert('Login failed.');
+      }
+    },
+    logoutUser() {
+      this.loggedIn = false;
+      this.username = "";
+    }
     
   },
 };

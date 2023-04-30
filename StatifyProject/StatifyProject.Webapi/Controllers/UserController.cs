@@ -5,6 +5,14 @@ using System.Linq;
 using StatifyProject.Application.Model;
 using StatifyProject.Application.Dto;
 using StatifyProject.Application.Infrastructure;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace StatifyProject.Controllers
 {
@@ -14,13 +22,17 @@ namespace StatifyProject.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly StatifyContext _context;
+        private readonly IConfiguration _config;
 
-        public UserController(ILogger<UserController> logger, StatifyContext context)
+
+        public UserController(ILogger<UserController> logger, StatifyContext context, IConfiguration config)
         {
             _logger = logger;
             _context = context;
+            _config = config;
         }
 
+        /*
         [HttpGet("{id}")]
         public IActionResult GetUserById(int id)
         {
@@ -50,14 +62,14 @@ namespace StatifyProject.Controllers
                 return StatusCode(500, "Internal server error.");
             }
         }
-
-        /*
-        [HttpGet("{username}")]
-        public IActionResult GetUserByUsername(String Username)
+        */
+        
+        [HttpGet("{Guid}")]
+        public IActionResult GetUserByGuid(Guid Guid)
         {
             try
             {
-                var user = _context.Users.FirstOrDefault(u => u.Username == Username);
+                var user = _context.Users.FirstOrDefault(u => u.Guid == Guid);
 
                 if (user == null)
                 {
@@ -82,7 +94,7 @@ namespace StatifyProject.Controllers
                 return StatusCode(500, "Internal server error.");
             }
         }
-        */
+        
 
         [HttpGet]
         public IActionResult GetUsers()
@@ -90,7 +102,6 @@ namespace StatifyProject.Controllers
             try
             {
                 var users = _context.Users.ToList();
-
                 if (users == null || users.Count == 0)
                 {
                     return NotFound();
@@ -122,7 +133,7 @@ namespace StatifyProject.Controllers
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+                return CreatedAtAction(nameof(GetUserByGuid), new { Guid = user.Guid}, user);
             }
             catch (Exception ex)
             {
@@ -131,7 +142,56 @@ namespace StatifyProject.Controllers
             }
         }
 
-        
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginDto loginDto)
+        {
+
+            var secret = Convert.FromBase64String(_config["Secret"]);
+            var lifetime = TimeSpan.FromHours(3);
+            // Find the user in the database based on the provided email
+            var user = _context.Users.FirstOrDefault(u => u.Email == loginDto.Email);
+
+                // If the user is not found or the password doesn't match, return an unauthorized response
+                if (user == null || !user.CheckPassword(loginDto.Password))
+                {
+                    return Unauthorized("Invalid email or password.");
+                }
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    // Payload for our JWT.
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                // Write username to the claim (the "data zone" of the JWT).
+                new Claim(ClaimTypes.Name, user.Username.ToString()),
+                // Write the role to the claim (optional)
+                    }),
+                    Expires = DateTime.UtcNow + lifetime,
+                    SigningCredentials = new SigningCredentials(
+                        new SymmetricSecurityKey(secret),
+                        SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                // Return the token so the client can save this to send a bearer token in the
+                // subsequent requests.
+                return Ok(new
+                {
+                    user.Username,
+                    UserGuid = user.Guid,
+                    Token = tokenHandler.WriteToken(token)
+                });
+            }
+
+
+
+
+
+
+
+
+
+
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
         {
