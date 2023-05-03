@@ -205,7 +205,7 @@ export default {
         password: '',
       },
       loggedIn: false,
-      userguid: {},
+      userGuid: {},
       user: {},
 
     };
@@ -226,10 +226,9 @@ export default {
       }
     },
     async UpdateUserData(){
-      const response3 = await axios.get("https://localhost:5001/api/users"+this.userguid);
+      const response3 = await axios.get("https://localhost:5001/api/users/"+this.userGuid);
       console.log(response3.data);
-      user = response3;
-      
+      this.user = response3.data; 
       console.log(this.user);
     },
     async loginUser() {
@@ -239,10 +238,12 @@ export default {
           email: this.model.email,
           password: this.model.password,
         });
-        console.log(response2.data);
-        this.userguid = response2.data.userguid;
-        this.loggedIn = true;
+       
+        this.userGuid = response2.data.userGuid;
+
         await this.UpdateUserData();
+        this.loggedIn = true;
+
         alert('Login successful!');
       } catch (error) {
         console.error(error);

@@ -117,10 +117,7 @@ import axios from 'axios';
 
           Userdata: [],
           topTracks: [],
-          topArtists: []
-
-          
-  
+          topArtists: []  
         };
       },
       mounted() {
@@ -130,16 +127,10 @@ import axios from 'axios';
         sendLoginData(){
           
           },
-
-
-
-
-
-
         //------------------------------------Spotify------------------------------------
         // Update the data properties 
         async fetchProfileData() {
-          const clientId = 'afc8cff8760e496a82a85b2cf42ff99b';
+          const clientId = 'Your-Client-ID'; 
           const params = new URLSearchParams(window.location.search);
           const code = params.get('code');
           if (!code) {
