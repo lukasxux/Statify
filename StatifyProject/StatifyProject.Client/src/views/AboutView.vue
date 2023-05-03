@@ -1,5 +1,6 @@
 <script setup>
 import axios from 'axios';
+import store from '../store.js';
 </script>
 
 <template>
@@ -217,7 +218,7 @@ export default {
           username: this.regmodel.regUsername,
           email: this.regmodel.regEmail,
           password: this.regmodel.regPassword,
-          bio: 'bio',
+          bio: 'default bio',
         });
         alert('Registration successful!');
       } catch (error) {
@@ -227,23 +228,21 @@ export default {
     },
     async UpdateUserData(){
       const response3 = await axios.get("https://localhost:5001/api/users/"+this.userGuid);
-      console.log(response3.data);
+
       this.user = response3.data; 
-      console.log(this.user);
+
     },
     async loginUser() {
-
       try {
         const response2 = await axios.post('https://localhost:5001/api/users/login', {
           email: this.model.email,
           password: this.model.password,
         });
-       
         this.userGuid = response2.data.userGuid;
-
+        this.$store.commit('authenticate', response2.data);
+        console.log(this.$store.state.user);
         await this.UpdateUserData();
         this.loggedIn = true;
-
         alert('Login successful!');
       } catch (error) {
         console.error(error);

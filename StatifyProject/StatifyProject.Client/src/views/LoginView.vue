@@ -130,7 +130,7 @@ import axios from 'axios';
         //------------------------------------Spotify------------------------------------
         // Update the data properties 
         async fetchProfileData() {
-          const clientId = 'Your-Client-ID'; 
+          const clientId = 'afc8cff8760e496a82a85b2cf42ff99b'; 
           const params = new URLSearchParams(window.location.search);
           const code = params.get('code');
           if (!code) {
@@ -171,7 +171,6 @@ import axios from 'axios';
           params.append('code', code);
           params.append('redirect_uri', 'http://localhost:5173/login');
           params.append('code_verifier', verifier);
-  
           const result = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
             headers: {
@@ -179,7 +178,6 @@ import axios from 'axios';
             },
             body: params,
           });
-  
           const {
             access_token
           } = await result.json();

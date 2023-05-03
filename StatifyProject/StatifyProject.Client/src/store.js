@@ -3,16 +3,24 @@ import { createStore } from 'vuex'   // npm install vuex
 export default createStore({
     state() {
         return {
-            user: null
+            user:{
+                name: '',
+                guid:'',
+                isLoggedIn: false,
+            }
+
         }
     },
     mutations: {
-        authenticate(state, userdata) {
+        authenticate(state, userdata) { //selber gemacht
             if (!userdata) {
-                state.user = null;
+                state.user = { name: "", guid: "", isLoggedIn: false };
                 return;
             }
-            state.user = userdata;
+            state.user.name = userdata.username;
+            state.user.guid = userdata.userGuid;
+            state.user.isLoggedIn = true;
         }
+
     }
 });
