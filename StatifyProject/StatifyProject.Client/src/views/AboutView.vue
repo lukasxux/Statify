@@ -5,7 +5,7 @@ import store from '../store.js';
 
 <template>
   <div class="StatifyAccountView">
-    <div v-if="!loggedIn" class="login-container">
+    <div v-if="!$store.state.user.isLoggedIn" class="login-container">
       <h1>Login</h1>
       <form @submit.prevent="loginUser">
         <div class="form-group">
@@ -29,11 +29,11 @@ import store from '../store.js';
       <button @click="logoutUser">Log out</button>
     </div>
 
-    <div v-if="!loggedIn" id="or">
+    <div v-if="!$store.state.user.isLoggedIn" id="or">
       <span><h5 id="or-text">or</h5></span>
     </div>
 
-    <div v-if="!loggedIn" class="registration-container">
+    <div v-if="!$store.state.user.isLoggedIn" class="registration-container">
       <h1>Register</h1>
       <form @submit.prevent="registerUser">
         <div class="form-group">
@@ -54,9 +54,10 @@ import store from '../store.js';
   </div>
 </template>
 
+
+
+
 <style>
-
-
 /*OR THING CSS----------------------------*/
 #or-text{
   font-weight: bold;
@@ -205,7 +206,6 @@ export default {
         email: '',
         password: '',
       },
-      loggedIn: false,
       userGuid: {},
       user: {},
 
@@ -228,9 +228,7 @@ export default {
     },
     async UpdateUserData(){
       const response3 = await axios.get("https://localhost:5001/api/users/"+this.userGuid);
-
       this.user = response3.data; 
-
     },
     async loginUser() {
       try {
@@ -240,7 +238,6 @@ export default {
         });
         this.userGuid = response2.data.userGuid;
         this.$store.commit('authenticate', response2.data);
-        console.log(this.$store.state.user);
         await this.UpdateUserData();
         this.loggedIn = true;
         alert('Login successful!');
@@ -250,10 +247,11 @@ export default {
       }
     },
     logoutUser() {
-      this.loggedIn = false;
+      this.$store.state.user.isLoggedIn = false;
+      this.$store.state.user.userGuid = "";
+      this.$store.state.user.username = "";
       this.username = "";
     }
-    
   },
 };
 </script>

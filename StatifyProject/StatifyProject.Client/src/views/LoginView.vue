@@ -130,7 +130,7 @@ import axios from 'axios';
         //------------------------------------Spotify------------------------------------
         // Update the data properties 
         async fetchProfileData() {
-          const clientId = 'afc8cff8760e496a82a85b2cf42ff99b'; 
+          const clientId = 'your-client-id'; 
           const params = new URLSearchParams(window.location.search);
           const code = params.get('code');
           if (!code) {

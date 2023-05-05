@@ -7,7 +7,7 @@ import axios from 'axios';
     <div class="container">
       <h1 class="title"><span style="color: #1db954;">Top</span> Tracks</h1>
 
-      <section id="profile" class="profile-section">
+      <section id="profile" class="profile-section"> 
         
         <div class="avatar-wrapper">
           <img id="avatar" class="avatar" width="200" :src="avatarSrc" />

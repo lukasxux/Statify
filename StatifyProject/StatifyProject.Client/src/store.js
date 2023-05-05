@@ -8,19 +8,17 @@ export default createStore({
                 guid:'',
                 isLoggedIn: false,
             }
-
         }
     },
     mutations: {
-        authenticate(state, userdata) { //selber gemacht
+        authenticate(state, userdata) { 
             if (!userdata) {
                 state.user = { name: "", guid: "", isLoggedIn: false };
                 return;
             }
             state.user.name = userdata.username;
             state.user.guid = userdata.userGuid;
-            state.user.isLoggedIn = true;
+                state.user.isLoggedIn = true;
         }
-
     }
 });
