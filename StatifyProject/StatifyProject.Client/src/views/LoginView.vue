@@ -130,19 +130,14 @@ import axios from 'axios';
         //------------------------------------Spotify------------------------------------
         // Update the data properties 
         async fetchProfileData() {
-          const clientId = 'your-client-id'; 
+          const clientId = 'afc8cff8760e496a82a85b2cf42ff99b'; 
           const params = new URLSearchParams(window.location.search);
           const code = params.get('code');
           if (!code) {
             this.redirectToAuthCodeFlow(clientId);
           } else {
             const accessToken = await this.getAccessToken(clientId, code);
-            const profile = await this.fetchProfile(accessToken);
-            const topTracks = await this.fetchTopTracks(accessToken);
-            const topArist = await this.fetchTopArtist(accessToken);
-            this.updateProfilInfo(profile);
-            this.updateTopTracks(topTracks);
-            this.updateTopArtist(topArist);
+
           } 
         },
         //---------------------------------Authentication---------------------------------
@@ -208,75 +203,7 @@ import axios from 'axios';
           const hashBuffer = await crypto.subtle.digest('SHA-256', data);
           return hashBuffer;
         },
-  
-        //---------------------------------User Data---------------------------------
-        async fetchProfile(accessToken) {
-          const result = await fetch('https://api.spotify.com/v1/me', {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
-          });
-  
-          const profile = await result.json();
-          console.log(profile)
-          sessionStorage.setItem('profile', JSON.stringify(profile));
-          return profile;
-        },
-  
-        updateProfilInfo(profile) {
-          this.profile = profile.items.map((item) => item.display_name);
-        },
-  
-        //---------------------------------Tracks---------------------------------
-        async fetchTopTracks(accessToken) {
-          const result = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50', {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
-          });
-          const topTracks = await result.json();
-  
-          sessionStorage.setItem('topTracks', JSON.stringify(topTracks));
-  
-          return topTracks;
-  
-        },
-  
-        updateTopTracks(topTracks) {
-          this.topTracks = topTracks.items.map((item) => item.name);
-          console.log(this.topTracks)
-        },
-        //---------------------------------Artist---------------------------------
-        async fetchTopArtist(accessToken) {
-          const result = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=20', {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
-          });
-  
-          const topArtists = await result.json();
-          console.log("------topArtists------")
-          sessionStorage.setItem('topArtists', JSON.stringify(topArtists));
-          return topArtists;
-        },
-  
-        updateTopArtist(topArtists) {
-  
-          this.topArtists = topArtists.items.map((item) => item.name);
-          console.log(this.topArtists)
-  
-  
-  
-        },
-        //---------------------------------Statify---------------------------------
+
       },
-      computed: {
-        authenticated() {
-            return this.$store.state.userdata.username ? true : false;
-        },
-        userdata() {
-            return this.$store.state.userdata;
-        },
-    },
     };
 </script>

@@ -16,17 +16,17 @@ import axios from 'axios';
       </div>
       <div class="collapse navbar-collapse" id="navbarNav">
          <ul class="navbar-nav ml-auto">
-            <li v-if=$store.state.user.isLoggedIn class="nav-item mx-0 mx-lg-1" id="padding-left">
+            <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/song">
                   <h5><span style="color: #1db954;">Top</span> Songs</h5>
                </router-link>
             </li>
-            <li v-if=$store.state.user.isLoggedIn class="nav-item mx-0 mx-lg-1" id="padding-left">
+            <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist">
                   <h5><span style="color: #1db954;">Top</span> Artists</h5>
                </router-link>
             </li>
-            <li class="nav-item mx-0 mx-lg-1" id="padding-left">
+            <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/my-account">
                   <h5><span style="color: #1db954;">My</span> Account</h5>
                </router-link>

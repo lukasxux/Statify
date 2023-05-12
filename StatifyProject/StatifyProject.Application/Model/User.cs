@@ -11,16 +11,20 @@
     [Index(nameof(Email), IsUnique = true)]
     public class User
     {
-        public User(string username, string email, string initialPassword, DateTime created_at, string bio, UserRole role, string? favoriteSong = null, string? favoriteArtist = null)
+        public User(string username, string email, string accessToken,string refreshToken, string initialPassword, DateTime created_at,
+            string bio, UserRole role, string? favoriteSong = null, string? favoriteArtist = null)
         {
             Username = username;
             Email = email;
+            AccessToken = accessToken;
+            RefreshToken = refreshToken;
             SetPassword(initialPassword);
             Created_at = created_at;
             FavoriteSong = favoriteSong;
             FavoriteArtist = favoriteArtist;
             Bio = bio;
             Role = role;
+
             
         }
 
@@ -38,8 +42,11 @@
         public string Username { get; set; }
         [MaxLength(40)]
         public string Email { get; set; }
-        [MaxLength(50)]
- 
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+
+
+
         public DateTime Created_at { get; set; }
         public String? FavoriteSong { get; set; }
         public String? FavoriteArtist { get; set; }

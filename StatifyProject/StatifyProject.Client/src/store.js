@@ -7,18 +7,20 @@ export default createStore({
                 name: '',
                 guid:'',
                 isLoggedIn: false,
+                spotifyToken: '',
             }
         }
     },
     mutations: {
         authenticate(state, userdata) { 
             if (!userdata) {
-                state.user = { name: "", guid: "", isLoggedIn: false };
+                state.user = { name: "", guid: "", isLoggedIn: false, spotifyToken: "" };
                 return;
             }
             state.user.name = userdata.username;
             state.user.guid = userdata.userGuid;
-                state.user.isLoggedIn = true;
+            state.user.isLoggedIn = true;
+            state.user.spotifyToken = userdata.spotifyToken;
         }
     }
 });

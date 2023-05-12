@@ -21,11 +21,7 @@ import store from '../store.js';
     </div>
 
     <div v-else class="user-info">
-      <p>Welcome, {{ user.username }}!</p>
-      <p>Username: {{ user.username }}</p>
-      <p>Email: {{ user.email }}</p>
-      <p>Favorite Song: {{ user.favoriteSong }}</p>
-      <p>Favorite Artist: {{ user.favoriteArtist }}</p>
+      <p>Welcome, {{ accessToken }}!</p>
       <button @click="logoutUser">Log out</button>
     </div>
 
@@ -35,7 +31,7 @@ import store from '../store.js';
 
     <div v-if="!$store.state.user.isLoggedIn" class="registration-container">
       <h1>Register</h1>
-      <form @submit.prevent="registerUser">
+      
         <div class="form-group">
           <label for="username">Username:</label>
           <input type="text" id="username" v-model="regmodel.regUsername" />
@@ -48,14 +44,178 @@ import store from '../store.js';
           <label for="password">Password:</label>
           <input type="password" id="password" v-model="regmodel.regPassword" />
         </div>
-        <button type="submit">Register</button>
-      </form>
+        <div v-if="!isLinked" class="form-group">
+          <label for="password">Link Spotify Account:</label>
+          <button style="color: white" @click="linkSpotifyAcc">Click to Link</button>
+        </div>
+        <div v-else class="form-group">
+          <label for="password">Linked Spotify Account:</label>
+          <label for="password">Username: {{SpotifyAccount.display_name}}</label>
+        </div>
+        <button @click="registerUser" type="submit">Register</button>
+      
     </div>
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      regmodel: {
+        regusername: '',
+        regemail: '',
+        regPassword: '',
+      },
+      model: {
+        email: '',
+        password: '',
+      },
+      userGuid: {},
+      SpotifyAccount: {},
+      isLinked: false,
+      UseraccessToken: '',
+      UserrefreshToken: ''
 
+    };
+  },
+  methods: {
+      async registerUser() {
+       try {
+        const response = await axios.post('https://localhost:5001/api/users', {
+          username: this.regmodel.regUsername,
+          email: this.regmodel.regEmail,
+          password: this.regmodel.regPassword,
+          accessToken: this.UseraccessToken,
+          refreshToken: this.UserrefreshToken,
+          Bio: "This is my bio"
+        });
+        alert('Registration successful!');
+      } catch (error) {
+        console.error(error);
+        alert('Registration failed.');
+      }
+    },
+    async UpdateUserData(){
+      const response3 = await axios.get("https://localhost:5001/api/users/"+this.userGuid);
+      console.log(response3.data);
+      localStorage.setItem('access_token', response3.data.accessToken);
+      localStorage.setItem('refresh_token', response3.data.refreshToken);
+      this.user = response3.data; 
+    },
+    async loginUser() {
+      try {
+        const response2 = await axios.post('https://localhost:5001/api/users/login', {
+          email: this.model.email,
+          password: this.model.password,
+        });
+        this.$store.commit('authenticate', response2.data);
+        this.userGuid = response2.data.userGuid;
+        console.log(response2);
+        await this.UpdateUserData();
+        this.loggedIn = true;
+        alert('Login successful!');
+      } catch (error) {
+        console.error(error);
+        alert('Login failed.');
+      }
+    },
+    logoutUser() {
+      this.$store.state.user.isLoggedIn = false;
+      this.$store.state.user.userGuid = "";
+      this.$store.state.user.username = "";
+      this.username = "";
+    },
+    linkSpotifyAcc(){
+      this.fetchProfileData();
+    },
+    
+    //------------------------------------Spotify------------------------------------
+        // Update the data properties 
+        async fetchProfileData() {
+          const clientId = 'afc8cff8760e496a82a85b2cf42ff99b'; 
+          const params = new URLSearchParams(window.location.search);
+          const code = params.get('code');
+          if (!code) {
+            this.redirectToAuthCodeFlow(clientId);
+          } else {
+            const accessToken = await this.getAccessToken(clientId, code);
+            this.isLinked = true;
+          } 
+        },
+        //---------------------------------Authentication---------------------------------
+        async redirectToAuthCodeFlow(clientId) {
+          const verifier = this.generateCodeVerifier(128);
+          const challenge = await this.generateCodeChallenge(verifier);
+  
+          localStorage.setItem('verifier', verifier);
+  
+          const params = new URLSearchParams();
+          params.append('client_id', clientId);
+          params.append('response_type', 'code');
+          params.append('redirect_uri', 'http://localhost:5173/about');
+          params.append('scope', 'user-read-private user-read-email user-library-read playlist-read-private playlist-read-collaborative user-follow-read user-follow-modify user-top-read');
+          params.append('code_challenge_method', 'S256');
+          params.append('code_challenge', challenge);
+  
+          document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
+        },
+        async getAccessToken(clientId, code) {
+          const verifier = localStorage.getItem('verifier');
 
+          const params = new URLSearchParams();
+          params.append('client_id', clientId);
+          params.append('grant_type', 'authorization_code');
+          params.append('code', code);
+          params.append('redirect_uri', 'http://localhost:5173/about');
+          params.append('code_verifier', verifier);
+          params.append('scope', 'user-read-private user-read-email user-library-read playlist-read-private playlist-read-collaborative user-follow-read user-follow-modify user-top-read');
+
+          const result = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params,
+          });
+
+          const { access_token, refresh_token } = await result.json();
+          this.UseraccessToken = access_token;
+          this.UserrefreshToken = refresh_token;
+          return access_token;
+        },
+        generateCodeVerifier(length) {
+          let text = '';
+          let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  
+          for (let i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+          }
+  
+          return text;
+        },
+        async generateCodeChallenge(verifier) {
+          const hashedVerifier = await this.sha256(verifier);
+          const base64Url = btoa(String.fromCharCode(...new Uint8Array(hashedVerifier)))
+            .replace('+', '-')
+            .replace('/', '_')
+            .replace(/=+$/, '');
+  
+          return base64Url;
+        },
+        async sha256(plain) {
+          const encoder = new TextEncoder();
+          const data = encoder.encode(plain);
+          const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+          return hashBuffer;
+        },
+  
+       
+        //---------------------------------Statify---------------------------------
+      },
+   } ;
+
+</script>
 
 <style>
 /*OR THING CSS----------------------------*/
@@ -139,6 +299,13 @@ button[type="submit"] {
   cursor: pointer;
 }
 /*Register CSS----------------------------*/
+#spotify-link-button{
+  width: 200px;
+  height: 40px;
+
+}
+
+
 .registration-container {
   max-width: 400px;
   margin: auto;
@@ -191,67 +358,3 @@ button[type="submit"] {
 
 
 </style>
-
-
-<script>
-export default {
-  data() {
-    return {
-      regmodel: {
-        regusername: '',
-        regemail: '',
-        regpassword: '',
-      },
-      model: {
-        email: '',
-        password: '',
-      },
-      userGuid: {},
-      user: {},
-
-    };
-  },
-  methods: {
-    async registerUser() {
-      try {
-        const response = await axios.post('https://localhost:5001/api/users', {
-          username: this.regmodel.regUsername,
-          email: this.regmodel.regEmail,
-          password: this.regmodel.regPassword,
-          bio: 'default bio',
-        });
-        alert('Registration successful!');
-      } catch (error) {
-        console.error(error);
-        alert('Registration failed.');
-      }
-    },
-    async UpdateUserData(){
-      const response3 = await axios.get("https://localhost:5001/api/users/"+this.userGuid);
-      this.user = response3.data; 
-    },
-    async loginUser() {
-      try {
-        const response2 = await axios.post('https://localhost:5001/api/users/login', {
-          email: this.model.email,
-          password: this.model.password,
-        });
-        this.userGuid = response2.data.userGuid;
-        this.$store.commit('authenticate', response2.data);
-        await this.UpdateUserData();
-        this.loggedIn = true;
-        alert('Login successful!');
-      } catch (error) {
-        console.error(error);
-        alert('Login failed.');
-      }
-    },
-    logoutUser() {
-      this.$store.state.user.isLoggedIn = false;
-      this.$store.state.user.userGuid = "";
-      this.$store.state.user.username = "";
-      this.username = "";
-    }
-  },
-};
-</script>

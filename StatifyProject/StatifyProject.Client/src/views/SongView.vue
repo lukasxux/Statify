@@ -48,16 +48,21 @@ export default {
     };
   },
   mounted() {
-    this.logTopTracks();
+    this.fetchTopTracks();
   },
   methods: {
-    logTopTracks() {
-      const storedArrayString = sessionStorage.getItem('topTracks');
-      const retrievedArray = JSON.parse(storedArrayString);
-      console.log("retrievedArray");
-      console.log(retrievedArray);
-      this.topTracks = retrievedArray.items;
-    },
+    async fetchTopTracks() {
+      const access_token = localStorage.getItem('access_token');
+          const result = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50', {
+            headers: {
+              Authorization: `Bearer ${access_token}`
+            },
+          });
+          const topTracks = await result.json();
+          this.topTracks = topTracks.items;
+          return topTracks;
+  
+        },
     navigateToTrack(track) {
     const trackLink = this.getTrackLink(track);
     if (trackLink) {

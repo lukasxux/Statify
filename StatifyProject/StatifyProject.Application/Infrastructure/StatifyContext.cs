@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using StatifyProject.Application.Model;
+using Microsoft.Win32.SafeHandles;
 
 namespace StatifyProject.Application.Infrastructure
 {
@@ -45,7 +46,7 @@ namespace StatifyProject.Application.Infrastructure
         {
             Randomizer.Seed = new Random(1039);
             var faker = new Faker("de");
-            
+
 
             var users = new Faker<User>("de").CustomInstantiator(f =>
             {
@@ -53,21 +54,21 @@ namespace StatifyProject.Application.Infrastructure
                 return new User(
                   username: "matrix",
                   email: $"{username}@mail.at",
+                  accessToken: "accessToken",
+                  refreshToken: "refreshToken",
                   initialPassword: "1111",
                   created_at: new DateTime(2022, 1, 1),
                   role: UserRole.User,
                   bio: "Beschreibung Beschreibung aöoishlfdsalhda",
                   favoriteSong: "FavSong",
                   favoriteArtist: "FavArtist")
-                
+
 
                 { Guid = f.Random.Guid() };
             })
             .Generate(20)
             .GroupBy(e => e.Username).Select(g => g.First())
             .ToList();
-
-
         }
 
         public void Seed()
@@ -82,6 +83,8 @@ namespace StatifyProject.Application.Infrastructure
                 return new User(
                   username: username,
                   email: $"{username}@mail.at",
+                  accessToken: "accessToken",
+                  refreshToken: "refreshToken",
                   initialPassword: "1111",
                   created_at: f.Date.Between(new DateTime(2021, 1, 1), new DateTime(2022, 1, 1)),
                   role: UserRole.User,

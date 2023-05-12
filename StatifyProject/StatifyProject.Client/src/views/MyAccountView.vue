@@ -86,6 +86,8 @@ li{
 export default {
   data() {
     return {
+      profile: {},
+
       displayName: '', // Display name of the user
       avatarSrc: '', // Avatar source of the user
       followers: '', // Follower of the user
@@ -103,23 +105,44 @@ export default {
   mounted() {
     // Fetch the user's profile data from Spotify API and update the data properties
     this.fetchUserData();
+    
   },
   methods: {
  // Update the data properties 
- fetchUserData(){
-  const storedArrayString = sessionStorage.getItem('profile');
-    const retrievedArray = JSON.parse(storedArrayString);
-    console.log(retrievedArray);
-    this.displayName = retrievedArray.display_name;
-    this.avatarSrc = retrievedArray.images[0].url;
-    this.followers = retrievedArray.followers.total;
-    this.country = retrievedArray.country;
-    this.id = retrievedArray.id;
-    this.email = retrievedArray.email;
-    this.product = retrievedArray.product;
-    this.uri = retrievedArray.uri;
-    this.url = retrievedArray.external_urls.spotify;
-    this.imgUrl = retrievedArray.images[0].url;
+      async fetchProfile() {
+        const access_token = localStorage.getItem('access_token');
+          const result = await fetch('https://api.spotify.com/v1/me', {
+               headers: {
+                Authorization: `Bearer ${access_token}`
+                  },
+                });
+          const profile = await result.json();
+          
+          this.profile = profile;
+          return profile;
+        },
+  
+        updateProfilInfo(profile) {
+          this.profile = profile.items.map((item) => item.display_name);
+
+        },
+ async fetchUserData(){
+  //const storedArrayString = sessionStorage.getItem('profile');
+    const profil = await this.fetchProfile();
+
+
+
+    console.log(profile);
+    this.displayName = this.profile.display_name;
+    this.avatarSrc = this.profile.images[0].url;
+    this.followers = this.profile.followers.total;
+    this.country = this.profile.country;
+    this.id = this.profile.id;
+    this.email = this.profile.email;
+    this.product = this.profile.product;
+    this.uri = this.profile.uri;
+    this.url = this.profile.external_urls.spotify;
+    this.imgUrl = this.profile.images[0].url;
  }
   }
 };

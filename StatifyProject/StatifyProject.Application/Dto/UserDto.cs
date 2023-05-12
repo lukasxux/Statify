@@ -17,6 +17,10 @@ namespace StatifyProject.Application.Dto
      [StringLength(50, MinimumLength = 3, ErrorMessage = "Die Länge der Email ist ungültig.")]
     string Email,
 
+     string AccessToken,
+
+     string RefreshToken,
+
      [StringLength(255, MinimumLength = 6, ErrorMessage = "Die Länge des Passworts ist ungültig.")]
     string Password,
 

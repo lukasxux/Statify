@@ -80,10 +80,13 @@ namespace StatifyProject.Controllers
                     user.Guid,
                     user.Username,
                     user.Email,
+                    user.AccessToken,
+                    user.RefreshToken,
                     user.PasswordHash,
+                    user.Bio ?? string.Empty,
                     user.FavoriteSong?.ToString() ?? string.Empty,
                     user.FavoriteArtist?.ToString() ?? string.Empty,
-                    user.Bio ?? string.Empty,
+
                     user.Role
                 );
                 return Ok(userDto);
@@ -128,7 +131,7 @@ namespace StatifyProject.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var user = new User(userDto.Username, userDto.Email, userDto.Password, DateTime.UtcNow, userDto.Bio, userDto.Role, userDto.FavoriteSong, userDto.FavoriteArtist);
+                var user = new User(userDto.Username, userDto.Email,userDto.AccessToken,userDto.RefreshToken ,userDto.Password, DateTime.UtcNow, userDto.Bio, userDto.Role, userDto.FavoriteSong, userDto.FavoriteArtist);
 
                 _context.Users.Add(user);
                 _context.SaveChanges();

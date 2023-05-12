@@ -103,17 +103,22 @@ export default {
   },
   mounted() {
     // Fetch the user's profile data from Spotify API and update the data properties
-    this.logTopArtist();
+    this.fetchTopArtist();
 
   },
   methods: {
-   logTopArtist(){
-      const storedArrayString = sessionStorage.getItem('topArtists');
-      const retrievedArray = JSON.parse(storedArrayString);
-      console.log("retrievedArray");
-      console.log(retrievedArray);
-      this.topArtists = retrievedArray.items;
-  },
+    async fetchTopArtist() {
+      const access_token = localStorage.getItem("access_token")
+          const result = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=20', {
+            headers: {
+              Authorization: `Bearer ${access_token}`
+            },
+          });
+          const topArtists = await result.json();
+          this.topArtists = topArtists.items;
+          return topArtists;
+        },
+
   navigateToArtist(artist) {
     const artistLink = this.getArtistLink(artist);
     if (artistLink) {
@@ -127,6 +132,9 @@ export default {
     console.log(artist);
       return artist.external_urls.spotify;
   },
+
+
+
 },
 };
 </script>
