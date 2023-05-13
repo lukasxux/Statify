@@ -3,7 +3,7 @@
     <br>
     <br>
 
-    <h1 class="subtitle">Logged in as <span class="display-name">{{ displayName }}</span></h1>
+    <h1 class="subtitle"><span class="display-name">{{ displayName }}</span></h1>
   
     <section id="profile" class="profile-section">
       <div class="row">
@@ -16,8 +16,6 @@
           <ul class="profile-list">
             <li><strong>Follower:</strong>  <span class="profile-info">{{ followers }}</span></li> 
             <li><strong>Country:</strong>  <span class="profile-info">{{ country }}</span></li>
-            <li><strong>User ID:</strong> <span class="profile-info">{{ id }}</span></li>
-            <li><strong>Email:</strong> <span class="profile-info">{{ email }}</span></li>
             <li><strong>Product:</strong>  <span class="profile-info">{{ product }}</span></li>
             <li><strong>Spotify:</strong> <a :href="uri" class="profile-link">{{ uri }}</a></li>
             <!--<li><strong>Profile Image:</strong> <span class="profile-info">{{ imgUrl }}</span></li>-->
@@ -25,12 +23,27 @@
         </div>
       </div>
     </section>
+<br>
+<br>
+<br>
+<hr>
+<br>
+<br>
+    <TopFiveSongsVue></TopFiveSongsVue>
+    <br>
+    <br>
+    <TopFiveArtist></TopFiveArtist>
+<br>
+<br>
+<br>
+<br>
   </div>
 </template>
 
 <style scoped>
-.container {
-  width: 1000px;
+hr{
+  display: inline-block;
+  width: 50%;
 }
 
 .subtitle {
@@ -42,6 +55,7 @@
 .display-name {
   font-weight: bold;
   color:  #1db954;
+  font-size: 40px;
 }
 
 .avatar-wrapper {
@@ -62,7 +76,7 @@
   padding: 0;
   margin: 0;
   text-align: left ;
-  font-size: 20px;
+  font-size: 30px;
   margin-top: 55px;
   color: #fff;
 }
@@ -83,7 +97,13 @@ li{
 
 </style>
 <script>
+import TopFiveSongsVue from '../components/TopFiveSongs.vue';
+import TopFiveArtist from '../components/TopFiveArtist.vue';
 export default {
+  components: {
+    TopFiveSongsVue,
+    TopFiveArtist
+  },
   data() {
     return {
       profile: {},

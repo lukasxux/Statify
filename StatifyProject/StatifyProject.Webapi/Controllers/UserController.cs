@@ -63,7 +63,7 @@ namespace StatifyProject.Controllers
             }
         }
         */
-        
+
         [HttpGet("{Guid}")]
         public IActionResult GetUserByGuid(Guid Guid)
         {
@@ -97,7 +97,7 @@ namespace StatifyProject.Controllers
                 return StatusCode(500, "Internal server error.");
             }
         }
-        
+
 
         [HttpGet]
         public IActionResult GetUsers()
@@ -120,7 +120,7 @@ namespace StatifyProject.Controllers
         }
 
 
-        
+
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserDto userDto)
         {
@@ -131,12 +131,12 @@ namespace StatifyProject.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var user = new User(userDto.Username, userDto.Email,userDto.AccessToken,userDto.RefreshToken ,userDto.Password, DateTime.UtcNow, userDto.Bio, userDto.Role, userDto.FavoriteSong, userDto.FavoriteArtist);
+                var user = new User(userDto.Username, userDto.Email, userDto.AccessToken, userDto.RefreshToken, userDto.Password, DateTime.UtcNow, userDto.Bio, userDto.Role, userDto.FavoriteSong, userDto.FavoriteArtist);
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                return CreatedAtAction(nameof(GetUserByGuid), new { Guid = user.Guid}, user);
+                return CreatedAtAction(nameof(GetUserByGuid), new { Guid = user.Guid }, user);
             }
             catch (Exception ex)
             {
@@ -145,14 +145,14 @@ namespace StatifyProject.Controllers
             }
         }
 
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto loginDto)
-        {
+            [HttpPost("login")]
+            public IActionResult Login([FromBody] LoginDto loginDto)
+            {
 
-            var secret = Convert.FromBase64String(_config["Secret"]);
-            var lifetime = TimeSpan.FromHours(3);
-            // Find the user in the database based on the provided email
-            var user = _context.Users.FirstOrDefault(u => u.Email == loginDto.Email);
+                var secret = Convert.FromBase64String(_config["Secret"]);
+                var lifetime = TimeSpan.FromHours(3);
+                // Find the user in the database based on the provided email
+                var user = _context.Users.FirstOrDefault(u => u.Email == loginDto.Email);
 
                 // If the user is not found or the password doesn't match, return an unauthorized response
                 if (user == null || !user.CheckPassword(loginDto.Password))
@@ -195,63 +195,64 @@ namespace StatifyProject.Controllers
 
 
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
-        {
-            try
+            [HttpPut("{id}")]
+            public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
             {
-                if (!ModelState.IsValid)
+                try
                 {
-                    return BadRequest(ModelState);
+                    if (!ModelState.IsValid)
+                    {
+                        return BadRequest(ModelState);
+                    }
+
+                    var user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+                    if (user == null)
+                    {
+                        return NotFound();  //string username, string email, string initialPassword, DateTime created_at, string bio, UserRole role, string? favoriteSong = null, string? favoriteArtist = null
+                    }
+                    user.Username = userDto.Username;
+                    user.Email = userDto.Email;
+                    user.SetPassword(userDto.Password);
+                    user.Bio = userDto.Bio;
+                    user.FavoriteSong = userDto.FavoriteSong;
+                    user.FavoriteArtist = userDto.FavoriteArtist;
+
+                    _context.SaveChanges();
+
+                    return Ok();
                 }
-
-                var user = _context.Users.FirstOrDefault(u => u.Id == id);
-
-                if (user == null)
+                catch (Exception ex)
                 {
-                    return NotFound();  //string username, string email, string initialPassword, DateTime created_at, string bio, UserRole role, string? favoriteSong = null, string? favoriteArtist = null
+                    _logger.LogError(ex, "Error occurred while updating user.");
+                    return StatusCode(500, "Internal server error.");
                 }
-                user.Username = userDto.Username;
-                user.Email = userDto.Email;
-                user.SetPassword(userDto.Password);
-                user.Bio = userDto.Bio;
-                user.FavoriteSong = userDto.FavoriteSong;
-                user.FavoriteArtist = userDto.FavoriteArtist;
-
-                _context.SaveChanges();
-
-                return Ok();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while updating user.");
-                return StatusCode(500, "Internal server error.");
-            }
-        }
-        
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
-        {
-            try
-            {
-                var user = _context.Users.FirstOrDefault(u => u.Id == id);
 
-                if (user == null)
+            [HttpDelete("{id}")]
+            public IActionResult DeleteUser(int id)
+            {
+                try
                 {
-                    return NotFound();
+                    var user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                    _context.Users.Remove(user);
+                    _context.SaveChanges();
+
+                    return Ok("ok");
                 }
-
-                _context.Users.Remove(user);
-                _context.SaveChanges();
-
-                return Ok("ok");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while deleting user.");
-                return StatusCode(500, "Internal server error.");
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error occurred while deleting user.");
+                    return StatusCode(500, "Internal server error.");
+                }
             }
         }
     }
-}
+

@@ -8,7 +8,6 @@ import axios from 'axios';
       <a class="navbar-brand text-light h1" id="logo" href="/">
          <h1><span style="color: #1db954;">S</span><span style="color: #1db954;">t</span><span style="color: #1db954;">a</span><span style="color: #1db954;">t</span>ify</h1>
       </a>
-      <p>Logged in as {{ username }}. <span class="logout" v-on:click="deleteToken()">Logout</span></p>
       <div id="navbarCollapse">
          <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon" id="navbarIcon"></span>
@@ -16,6 +15,11 @@ import axios from 'axios';
       </div>
       <div class="collapse navbar-collapse" id="navbarNav">
          <ul class="navbar-nav ml-auto">
+            <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
+               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/other-users">
+                  <h5><span style="color: #1db954;">other</span> Users</h5>
+               </router-link>
+            </li>
             <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
                <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/song">
                   <h5><span style="color: #1db954;">Top</span> Songs</h5>

@@ -23,7 +23,6 @@
 </template>
 
 <style>
-
 .img{
     width: 600px;
 }
