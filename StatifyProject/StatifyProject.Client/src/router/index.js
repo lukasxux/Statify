@@ -7,6 +7,7 @@ import SongView from '../views/SongView.vue'
 import MyAccountView from '../views/MyAccountView.vue'
 import AboutView from '../views/AboutView.vue'
 import OtherUsersView from '../views/OtherUsersView.vue'
+import UserProfile from '../views/UserProfile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,7 +51,13 @@ const router = createRouter({
       name: 'other-users',
       component: OtherUsersView,
     
-    }
+    },
+    {
+      path: '/other-users-profil',
+      name: '/other-users-profil',
+      component: UserProfile,
+    
+    },
     
 
   ]

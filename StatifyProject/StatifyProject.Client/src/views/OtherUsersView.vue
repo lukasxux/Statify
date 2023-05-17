@@ -11,24 +11,28 @@ import axios from 'axios';
         alt="Spotify logo"
         class="logo"
       />
-      <form>
-        <input type="text" placeholder="Search..." />
+      <form @submit.prevent="searchUsers">
+        <input type="text" v-model="searchQuery" placeholder="Search..." />
         <button type="submit"><i class="fas fa-search"></i></button>
       </form>
     </div>
-  </div>
-  <br>
-  <br>
-  <hr>
-  <br>
-  <br>
-  <br>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+    <br>
+    <div v-for="(user) in users" :key="user" @click="visitUserProfile(user)" class="user-card">
+      <img src="../assets/img/StatifyLogo.png" alt="">
+      <p>{{ user.username }}</p>
+    </div>
+    
 
+    <div>
+      
 
+    </div>
 
-  <div v-for="(user) in users" :key="user.id" class="user-card">
-    <img src="../assets/img/StatifyLogo.png" alt="">
-    <p>{{user.username}}</p>
 
   </div>
 </template>
@@ -54,6 +58,7 @@ hr{
     border-radius: 10px;
     width: 400px;
     height: 100px;
+    margin-bottom: 10px;
   }
   
 
@@ -128,7 +133,23 @@ export default {
         const response = await axios.get("https://localhost:5001/api/users", { headers });
         this.users = response.data;
         console.log(this.users);
-
+    },
+    async getProfilPictiure(){
+        
+    },
+    visitUserProfile(user){
+      sessionStorage.setItem("visit-user", user.accessToken);
+      this.$router.push("/other-users-profil");
+      console.log('Clicked user ID:', user);
+    },
+    async searchUsers() {
+      if (this.searchQuery.trim() === '') {
+    // Reset the users array if the search query is empty
+    this.loadUsers();
+  } else {
+    const query = this.searchQuery.toLowerCase();
+    this.users = this.users.filter(user => user.username.toLowerCase().includes(query));
+  }
     },
   },
 };
