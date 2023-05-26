@@ -49,12 +49,11 @@ import axios from 'axios';
 </div>
 </template>
 
-<style>
-main {
-    margin-top: 6em;
-}
-</style>
+
 <style scoped>
+main {
+   margin-top: 6em;
+}
 .logout {
     opacity: 0.5;
     cursor: pointer;

@@ -101,6 +101,7 @@ export default {
     border: 1px solid #444;
     padding: 10px;
     text-align: center;
+    color: #fff;
   }
   
   .song-table th {
@@ -120,4 +121,6 @@ export default {
     width: 50px;
     height: 50px;
   }
+
+
 </style>
