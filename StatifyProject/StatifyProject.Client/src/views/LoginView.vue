@@ -341,7 +341,7 @@ input {
     async UpdateUserData(){
       const response3 = await axios.get("https://localhost:5001/api/users/"+this.userGuid);
       console.log(response3.data);
-      localStorage.setItem('access_token', response3.data.accessToken);
+      localStorage.setItem('access_token', response3.data.accessToken);   
       localStorage.setItem('refresh_token', response3.data.refreshToken);
       this.user = response3.data; 
     },

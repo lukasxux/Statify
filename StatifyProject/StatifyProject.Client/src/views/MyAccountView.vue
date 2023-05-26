@@ -141,9 +141,8 @@ export default {
           this.profile = profile;
           return profile;
         },
-  
         updateProfilInfo(profile) {
-          this.profile = profile.items.map((item) => item.display_name);
+          this.profile = profile.items.map((item) => item.display_name)        ;
 
         },
  async fetchUserData(){
