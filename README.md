@@ -12,11 +12,6 @@ git clone https://github.com/lukasxux/Statify
 
 Statify ist eine Webapplikation, die dem Nutzer seine Stats von Spotify anzeigen. Der Nutzer kann sich unter anderem seine meist gehörten Songs anschauen. Außerdem werden dem Nutzer seine meist gehörten Künstler angezeigt.
 
-In der ersten Version werden Artists und Songs gelistet, sodass der User
-seine Favoriten wählen kann. In der 2. Version im Sommersemester wird über die
-Spotify API die Einstellung übertragen und die Alben des Users können ausgelesen
-werden.
-
 ## Teammitglieder
 
 | Name                    | Email                    | Aufgabenbereich                                                      |
