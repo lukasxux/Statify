@@ -7,15 +7,7 @@
             <div id="welcome" class="col d-flex align-items-center">
                 <div>
                     <h1>Welcome to <span style="color: #1db954;">S</span><span style="color: #1db954;">t</span><span style="color: #1db954;">a</span><span style="color: #1db954;">t</span>ify</h1>
-                    <br>
-                    <br>
-                    <br>
-                    <h3>Login with your Spotify Account and view your most listened songs from Spotify.</h3>
-                    <button>TOP SONGS</button>
-                    <br>
-                    <br> 
-                    <h3>Or look at your favorite Artists</h3>
-                    <button>TOP ARTISTS</button>
+                    <p>Statify is a web application that allows you to view your Spotify listening history and statistics.</p>
                 </div>
             </div>
         </div>
