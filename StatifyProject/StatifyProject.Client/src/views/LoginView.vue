@@ -390,7 +390,7 @@ input {
         async redirectToAuthCodeFlow(clientId) {
           const verifier = this.generateCodeVerifier(128);
           const challenge = await this.generateCodeChallenge(verifier);
-  
+
           localStorage.setItem('verifier', verifier);
   
           const params = new URLSearchParams();
