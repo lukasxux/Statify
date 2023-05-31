@@ -92,7 +92,7 @@ main {
 </style>
 <script>
 import HomeView from './views/HomeView.vue';
-import ArtistView from './views/ArtistView.vue';
+import ArtistView from './views/ArtistVIew.vue';
 import SongView from './views/SongView.vue';
 import MyAccountView from './views/MyAccountView.vue';
 
