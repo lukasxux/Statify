@@ -186,15 +186,6 @@ namespace StatifyProject.Controllers
                 });
             }
 
-
-
-
-
-
-
-
-
-
             [HttpPut("{id}")]
             public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
             {
