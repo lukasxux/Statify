@@ -1,98 +1,79 @@
 <template>
   <div class="songView">
-      <h1 class="title"><span style="color: #1db954;">Top</span> Artists</h1>
-      <section id="profile" class="profile-section">
-        <div class="avatar-wrapper">
-          <img id="avatar" class="avatar" width="200" :src="avatarSrc" />
-        </div>
-        <ul class="profile-list">
-          <tr v-for="(Artist, index) in topArtists" :key="Artist.name" @click="navigateToArtist(Artist)">
-            <div class="card" :id="'card'+index+1">
-              <img :src="Artist.images[0].url" alt="Famous artist">
-              <div class="card-text">
-                <p class="Number">{{index+1}}</p>
-                <h2>{{ Artist.name }}</h2>
+    <h1 class="title"><span style="color: #1db954;">Top</span> Artists</h1>
+    <section id="profile" class="profile-section">
+      <ul class="profile-list">
+        <li v-for="(artist, index) in topArtists" :key="artist.name" @click="navigateToArtist(artist)">
+          <div class="card">
+            <div class="card-content">
+              <img :src="artist.images[0].url" :alt="artist.name" class="card-image">
+              <div>
+                <h3>{{ (index + 1) + '. ' + artist.name }}</h3>
+                <h5 class="genre">{{ artist.genres[0] }}</h5>
               </div>
             </div>
-          </tr>         
-        </ul>
-      </section>
-    </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-
-.Number{
-  font-size: 20px;
-  font-weight: bold;
-  color: #fff;
-  margin: 0 0 8px;
-}
 .songView .container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
-
-  display: flex;
-  justify-content: center;
 }
 
 .profile-list {
   list-style-type: none;
   padding: 0;
   margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 10px;
-}
-
-.profile-list > div:nth-child(3n) {
-  grid-column: span 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .card {
-  width: 300px;
-  height: 500px; /* add this line */
-  border: 1px solid #1db954;;
+  width: 420px;
+  border: 1px solid #1db954;
+  margin: 5px;
   border-radius: 8px;
   overflow: hidden;
-  background-color: #1db9542a;
+  background-color: #1db9542a; /* Neue Hintergrundfarbe für die Karten */
   color: #ffffff;
-
-  transition: transform 0.5s ease; /* Add transition effect */
+  transition: transform 0.5s ease;
+  display: flex;
 }
 
 .card:hover {
   transform: scale(1.05);
-
 }
 
-.card img {
-  width: 100%;
-  height: 100%;
-  display: block;
+.card-content {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  text-align: left;
+}
+
+.card-image {
+  width: 100px;
+  height: 100px;
   object-fit: cover;
+  margin-right: 16px;
 }
 
-
-.card-text {
-  padding: 16px;
-}
-
-.card-text p {
-  margin: 0 0 8px;
-}
-
-.card-text h2 {
+.card-content h3,
+.card-content p {
   margin: 0;
 }
-
-
-
-
-
-
-
+.genre {
+  color: darkgray;
+}
 </style>
+
+
 
 <script>
 export default {
@@ -116,6 +97,7 @@ export default {
           });
           const topArtists = await result.json();
           this.topArtists = topArtists.items;
+          console.log(topArtists);
           return topArtists;
         },
 
