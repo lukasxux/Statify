@@ -1,28 +1,31 @@
 <template>
   <div class="songView">
-      <h1 class="title"><span style="color: #1db954;">Top</span> Artists</h1>
-      <section id="profile" class="profile-section">
-        <div class="avatar-wrapper">
-          <img id="avatar" class="avatar" width="200" :src="avatarSrc" />
-        </div>
-        <ul class="profile-list">
-          <tr v-for="(Artist, index) in topArtists" :key="Artist.name" @click="navigateToArtist(Artist)">
-            <div class="card" :id="'card'+index+1">
-              <img :src="Artist.images[0].url" alt="Famous artist">
-              <div class="card-text">
-                <p class="Number">{{index+1}}</p>
-                <h2>{{ Artist.name }}</h2>
-              </div>
+    <h1 class="title"><span style="color: #1db954">Top</span> Artists</h1>
+    <section id="profile" class="profile-section">
+      <div class="avatar-wrapper">
+        <img id="avatar" class="avatar" width="200" :src="avatarSrc" />
+      </div>
+      <ul class="profile-list">
+        <tr
+          v-for="(Artist, index) in topArtists"
+          :key="Artist.name"
+          @click="navigateToArtist(Artist)"
+        >
+          <div class="card" :id="'card' + index + 1">
+            <img :src="Artist.images[0].url" alt="Famous artist" />
+            <div class="card-text">
+              <p class="Number">{{ index + 1 }}</p>
+              <h2>{{ Artist.name }}</h2>
             </div>
-          </tr>         
-        </ul>
-      </section>
-    </div>
+          </div>
+        </tr>
+      </ul>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-
-.Number{
+.Number {
   font-size: 20px;
   font-weight: bold;
   color: #fff;
@@ -52,7 +55,7 @@
 .card {
   width: 300px;
   height: 500px; /* add this line */
-  border: 1px solid #1db954;;
+  border: 1px solid #1db954;
   border-radius: 8px;
   overflow: hidden;
   background-color: #1db9542a;
@@ -63,7 +66,6 @@
 
 .card:hover {
   transform: scale(1.05);
-
 }
 
 .card img {
@@ -72,7 +74,6 @@
   display: block;
   object-fit: cover;
 }
-
 
 .card-text {
   padding: 16px;
@@ -85,13 +86,6 @@
 .card-text h2 {
   margin: 0;
 }
-
-
-
-
-
-
-
 </style>
 
 <script>
@@ -104,37 +98,36 @@ export default {
   mounted() {
     // Fetch the user's profile data from Spotify API and update the data properties
     this.fetchTopArtist();
-
   },
   methods: {
     async fetchTopArtist() {
-      const access_token = localStorage.getItem("access_token")
-          const result = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=20', {
-            headers: {
-              Authorization: `Bearer ${access_token}`
-            },
-          });
-          const topArtists = await result.json();
-          this.topArtists = topArtists.items;
-          return topArtists;
-        },
+      const access_token = localStorage.getItem("access_token");
+      const result = await fetch(
+        "https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=20",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      const topArtists = await result.json();
+      this.topArtists = topArtists.items;
+      return topArtists;
+    },
 
-  navigateToArtist(artist) {
-    const artistLink = this.getArtistLink(artist);
-    if (artistLink) {
-      const linkEl = document.createElement('a');
-      linkEl.href = artistLink;
-      linkEl.target = '_blank';
-      linkEl.click();
-    }
-  },
-  getArtistLink(artist) {
-    console.log(artist);
+    navigateToArtist(artist) {
+      const artistLink = this.getArtistLink(artist);
+      if (artistLink) {
+        const linkEl = document.createElement("a");
+        linkEl.href = artistLink;
+        linkEl.target = "_blank";
+        linkEl.click();
+      }
+    },
+    getArtistLink(artist) {
+      console.log(artist);
       return artist.external_urls.spotify;
+    },
   },
-
-
-
-},
 };
 </script>
