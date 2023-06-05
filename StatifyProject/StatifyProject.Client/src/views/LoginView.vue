@@ -406,6 +406,7 @@ export default {
     },
 
     //------------------------------------Spotify------------------------------------
+
     // Update the data properties
     async fetchProfileData() {
       const clientId = "afc8cff8760e496a82a85b2cf42ff99b";
