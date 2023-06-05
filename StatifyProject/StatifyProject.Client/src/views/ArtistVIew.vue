@@ -50,13 +50,6 @@
   transform: scale(1.05);
 }
 
-.card-content {
-  display: flex;
-  align-items: center;
-  padding: 16px 20px;
-  text-align: left;
-}
-
 .card-image {
   width: 100px;
   height: 100px;
@@ -68,11 +61,11 @@
 .card-content p {
   margin: 0;
 }
+
 .genre {
   color: darkgray;
 }
 </style>
-
 
 
 <script>
@@ -85,10 +78,10 @@ export default {
   mounted() {
     // Fetch the user's profile data from Spotify API and update the data properties
     this.fetchTopArtist();
-
   },
   methods: {
     async fetchTopArtist() {
+
       const access_token = localStorage.getItem("access_token")
           const result = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=20', {
             headers: {
@@ -113,10 +106,7 @@ export default {
   getArtistLink(artist) {
     console.log(artist);
       return artist.external_urls.spotify;
+    },
   },
-
-
-
-},
 };
 </script>
