@@ -1,26 +1,30 @@
-import { createStore } from 'vuex'   // npm install vuex
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
-    state() {
-        return {
-            user:{
-                name: '',
-                guid:'',
-                isLoggedIn: false,
-                spotifyToken: '',
-            }
-        }
+  state() {
+    return {
+      user: {
+        data: null,
+        isLoggedIn: false
+      }
+    };
+  },
+  mutations: {
+    store(state, data) {
+      state.user.data = data;
     },
-    mutations: {
-        authenticate(state, userdata) { 
-            if (!userdata) {
-                state.user = { name: "", guid: "", isLoggedIn: false, spotifyToken: "" };
-                return;
-            }
-            state.user.name = userdata.username;
-            state.user.guid = userdata.userGuid;
-            state.user.isLoggedIn = true;
-            state.user.spotifyToken = userdata.spotifyToken;
-        }
+    setLoggedInStatus(state) {
+      state.user.isLoggedIn = true;
     }
+  },
+  actions: {
+    storeData({ commit }, data) {
+      commit('store', data);
+    },
+    setLoggedIn({ commit }) {
+      commit('setLoggedInStatus');
+    }
+  },
+  plugins: [createPersistedState()]
 });

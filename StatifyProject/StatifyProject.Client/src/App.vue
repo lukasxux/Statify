@@ -1,62 +1,105 @@
 <script setup>
-import axios from 'axios';
+import axios from "axios";
 </script>
 
 <template>
-    <div class="bg-dark">
-   <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top">
+  <div class="bg-dark">
+    <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top">
       <a class="navbar-brand text-light h1" id="logo" href="/">
-         <h1><span style="color: #1db954;">S</span><span style="color: #1db954;">t</span><span style="color: #1db954;">a</span><span style="color: #1db954;">t</span>ify</h1>
+        <h1>
+          <span style="color: #1db954">S</span
+          ><span style="color: #1db954">t</span
+          ><span style="color: #1db954">a</span
+          ><span style="color: #1db954">t</span>ify
+        </h1>
       </a>
       <div id="navbarCollapse">
-         <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon" id="navbarIcon"></span>
-         </button>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon" id="navbarIcon"></span>
+        </button>
       </div>
       <div class="collapse navbar-collapse" id="navbarNav">
-         <ul class="navbar-nav ml-auto">
-            <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
-               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/other-users">
-                  <h5><span style="color: #1db954;">other</span> Users</h5>
-               </router-link>
-            </li>
-            <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
-               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light"  to="/song">
-                  <h5><span style="color: #1db954;">Top</span> Songs</h5>
-               </router-link>
-            </li>
-            <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
-               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/artist">
-                  <h5><span style="color: #1db954;">Top</span> Artists</h5>
-               </router-link>
-            </li>
-            <li  class="nav-item mx-0 mx-lg-1" id="padding-left">
-               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/my-account">
-                  <h5><span style="color: #1db954;">My</span> Account</h5>
-               </router-link>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1" id="login">
-               <router-link class="nav-link py-3 px-0 px-lg-3 rounded text-light" to="/login">
-                  <h5>Login</h5>
-               </router-link>
-            </li>
-         </ul>
+        <ul class="navbar-nav ml-auto">
+          <li
+            v-if="$store.state.user.isLoggedIn"
+            class="nav-item mx-0 mx-lg-1"
+            id="padding-left"
+          >
+            <router-link
+              class="nav-link py-3 px-0 px-lg-3 rounded text-light"
+              to="/other-users"
+            >
+              <h5><span style="color: #1db954">other</span> Users</h5>
+            </router-link>
+          </li>
+          <li
+            v-if="$store.state.user.isLoggedIn"
+            class="nav-item mx-0 mx-lg-1"
+            id="padding-left"
+          >
+            <router-link
+              class="nav-link py-3 px-0 px-lg-3 rounded text-light"
+              to="/song"
+            >
+              <h5><span style="color: #1db954">Top</span> Songs</h5>
+            </router-link>
+          </li>
+          <li
+            v-if="$store.state.user.isLoggedIn"
+            class="nav-item mx-0 mx-lg-1"
+            id="padding-left"
+          >
+            <router-link
+              class="nav-link py-3 px-0 px-lg-3 rounded text-light"
+              to="/artist"
+            >
+              <h5><span style="color: #1db954">Top</span> Artists</h5>
+            </router-link>
+          </li>
+          <li
+            v-if="$store.state.user.isLoggedIn"
+            class="nav-item mx-0 mx-lg-1"
+            id="padding-left"
+          >
+            <router-link
+              class="nav-link py-3 px-0 px-lg-3 rounded text-light"
+              to="/my-account"
+            >
+              <h5><span style="color: #1db954">My</span> Account</h5>
+            </router-link>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1" id="login">
+            <router-link
+              class="nav-link py-3 px-0 px-lg-3 rounded text-light"
+              to="/login"
+            >
+              <h5>Login</h5>
+            </router-link>
+          </li>
+        </ul>
       </div>
-   </nav>
-   <main class="container">
+    </nav>
+    <main class="container">
       <router-view></router-view>
-   </main>
-</div>
+    </main>
+  </div>
 </template>
-
 
 <style scoped>
 main {
-   margin-top: 6em;
+  margin-top: 6em;
 }
 .logout {
-    opacity: 0.5;
-    cursor: pointer;
+  opacity: 0.5;
+  cursor: pointer;
 }
 
 .navbar-toggler-icon {
@@ -64,70 +107,63 @@ main {
 }
 
 .navbar-toggler {
-    border-color: white;
+  border-color: white;
 }
 
 #padding-left {
-
-    padding-left: 30px;
+  padding-left: 30px;
 }
 
 #navbarCollapse {
-   padding-right: 20px;
-
+  padding-right: 20px;
 }
 
 #logo {
-   padding-left: 30px;
+  padding-left: 30px;
 }
 
 #navbarIcon {
-   border-color: white;
+  border-color: white;
 }
 
 #login {
-   padding-left: 30px; 
-   padding-right: 20px;
+  padding-left: 30px;
+  padding-right: 20px;
 }
 </style>
 <script>
-import HomeView from './views/HomeView.vue';
-import ArtistView from './views/ArtistVIew.vue';
-import SongView from './views/SongView.vue';
-import MyAccountView from './views/MyAccountView.vue';
+import HomeView from "./views/HomeView.vue";
+import ArtistView from "./views/ArtistVIew.vue";
+import SongView from "./views/SongView.vue";
+import MyAccountView from "./views/MyAccountView.vue";
 
 export default {
-    name: 'App',
-    components: {
-        HomeView,
-        ArtistView,
-        SongView,
-        MyAccountView
+  name: "App",
+  components: {
+    HomeView,
+    ArtistView,
+    SongView,
+    MyAccountView,
+  },
+  methods: {
+    deleteToken() {
+      delete axios.defaults.headers.common["Authorization"];
+      this.$store.commit("authenticate", null);
     },
-    methods: {
-        deleteToken() {
-            delete axios.defaults.headers.common['Authorization'];
-            this.$store.commit('authenticate', null);
-        },
+  },
+  computed: {
+    authenticated() {
+      return this.$store.state.user != null;
     },
-    computed: {
-        authenticated() {
-            return this.$store.state.user != null;
-        },
-        username() {
-            return this.$store.state.user?.username;
-        },
+    username() {
+      return this.$store.state.user?.username;
     },
+  },
 };
-$(function(){ 
-     var navMain = $("#navbarNav");
-     navMain.on("click", "a", null, function () {
-         navMain.collapse('hide');
-     });
- });
+$(function () {
+  var navMain = $("#navbarNav");
+  navMain.on("click", "a", null, function () {
+    navMain.collapse("hide");
+  });
+});
 </script>
-
-
-
-
-
