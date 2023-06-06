@@ -352,7 +352,7 @@ export default {
   methods: {
     async registerUser() {
       try {
-        const response = await axios.post("https://localhost:5001/api/users", {
+        const response = await axios.post("/users", {
           username: this.regmodel.regUsername,
           email: this.regmodel.regEmail,
           password: this.regmodel.regPassword,
@@ -367,20 +367,15 @@ export default {
       }
     },
     async UpdateUserData() {
-      const response3 = await axios.get(
-        "https://localhost:5001/api/users/" + this.userGuid
-      );
+      const response3 = await axios.get("/users/" + this.userGuid);
       this.user = response3.data;
     },
     async loginUser() {
       try {
-        const response2 = await axios.post(
-          "https://localhost:5001/api/users/login",
-          {
-            email: this.model.email,
-            password: this.model.password,
-          }
-        );
+        const response2 = await axios.post("/users/login", {
+          email: this.model.email,
+          password: this.model.password,
+        });
         this.$store.commit("authenticate", response2.data);
         this.userGuid = response2.data.userGuid;
         localStorage.setItem("access_token", response2.data.accessToken);
@@ -428,7 +423,7 @@ export default {
       const params = new URLSearchParams();
       params.append("client_id", clientId);
       params.append("response_type", "code");
-      params.append("redirect_uri", "https://localhost:5001/login");
+      params.append("redirect_uri", "http://localhost:5173/login");
       params.append(
         "scope",
         "user-read-private user-read-email user-library-read playlist-read-private playlist-read-collaborative user-follow-read user-follow-modify user-top-read"
@@ -445,7 +440,7 @@ export default {
       params.append("client_id", clientId);
       params.append("grant_type", "authorization_code");
       params.append("code", code);
-      params.append("redirect_uri", "https://localhost:5001/login");
+      params.append("redirect_uri", "http://localhost:5173/login");
       params.append("code_verifier", verifier);
       params.append(
         "scope",
