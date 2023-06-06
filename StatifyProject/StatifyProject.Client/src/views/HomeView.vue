@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="hr-container">
-    <hr>
+    <hr />
   </div>
   <div class="container">
     <div class="row">
@@ -32,12 +32,17 @@
         </h1>
         <div>
           <ul v-for="release in newReleases" :key="release.name">
-            <li style="list-style-type: none;">
+            <li style="list-style-type: none">
               <div class="container">
                 <div class="row">
-                  <div class="col-auto"> <!-- Set the column width to auto -->
+                  <div class="col-auto">
+                    <!-- Set the column width to auto -->
                     <span>
-                      <img class="releases-img" :src="release.images[0].url" alt="" />
+                      <img
+                        class="releases-img"
+                        :src="release.images[0].url"
+                        alt=""
+                      />
                     </span>
                   </div>
                   <div class="col">
@@ -45,28 +50,35 @@
                       <span>
                         {{ release.name }}
                         <br />
-                        <span style="color: #a3a3a3">{{ release.artists[0].name }}</span>
+                        <span style="color: #a3a3a3">{{
+                          release.artists[0].name
+                        }}</span>
                       </span>
                     </span>
                   </div>
                 </div>
               </div>
             </li>
-            
           </ul>
         </div>
       </div>
       <div class="col">
-        <h1 class="col-title"><span style="color: #1db954">Popular</span> Singles:</h1>
+        <h1 class="col-title">
+          <span style="color: #1db954">Popular</span> Singles:
+        </h1>
         <div>
           <ul v-for="single in popularSingles" :key="single.name">
-
-            <li style="list-style-type: none;">
+            <li style="list-style-type: none">
               <div class="container">
                 <div class="row">
-                  <div class="col-auto"> <!-- Set the column width to auto -->
+                  <div class="col-auto">
+                    <!-- Set the column width to auto -->
                     <span>
-                      <img class="releases-img" :src="single.track.album.images[0].url" alt="" />
+                      <img
+                        class="releases-img"
+                        :src="single.track.album.images[0].url"
+                        alt=""
+                      />
                     </span>
                   </div>
                   <div class="col">
@@ -74,7 +86,9 @@
                       <span>
                         {{ single.track.name }}
                         <br />
-                        <span style="color: #a3a3a3">{{ single.track.artists[0].name }}</span>
+                        <span style="color: #a3a3a3">{{
+                          single.track.artists[0].name
+                        }}</span>
                       </span>
                     </span>
                   </div>
@@ -105,7 +119,6 @@
 li {
   text-align: left;
   margin-bottom: 10px;
-
 }
 
 .releases-title {
@@ -152,6 +165,7 @@ button {
 </style>
 
 <script>
+import { useRouter } from "vue-router";
 export default {
   data() {
     return {
@@ -161,6 +175,13 @@ export default {
     };
   },
   mounted() {
+    const isLoggedIn = this.$store.state.user.isLoggedIn;
+    console.log("setLoggedIn:", isLoggedIn);
+
+    const router = useRouter();
+    if (!this.$store.state.user.isLoggedIn) {
+      router.push("/login");
+    }
     this.accessToken = localStorage.getItem("access_token");
     this.fetchNewReleases();
     this.fetchPopularSingles();

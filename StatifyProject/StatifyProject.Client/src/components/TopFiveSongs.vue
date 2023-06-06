@@ -5,8 +5,12 @@
         <div class="col">
           <h2 id="top-songs-title">Top 5 Songs</h2>
           <ul>
-            <div v-for="(track) in topTracks" :key="track.id">
-              <li>{{track.name}}&nbsp;<span>by {{track.artists[0].name}}</span></li>
+            <div v-for="track in topTracks" :key="track.id">
+              <li>
+                {{ track.name }}&nbsp;<span
+                  >by {{ track.artists[0].name }}</span
+                >
+              </li>
             </div>
           </ul>
         </div>
@@ -15,13 +19,27 @@
             <h2 id="top-songs-title"></h2>
             <div v-if="topTracks.length">
               <div class="row">
-                <div class="col-md-6" v-for="(track) in topTracks.slice(0,2)" :key="track.id">
-                  <img :src="track.album.images[1].url" style="margin-bottom: -150px" />
+                <div
+                  class="col-md-6"
+                  v-for="track in topTracks.slice(0, 2)"
+                  :key="track.id"
+                >
+                  <img
+                    :src="track.album.images[1].url"
+                    style="margin-bottom: -150px"
+                  />
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-4" v-for="(track) in topTracks.slice(2,5)" :key="track.id">
-                  <img :src="track.album.images[1].url" style="margin-bottom: -150px" />
+                <div
+                  class="col-md-4"
+                  v-for="track in topTracks.slice(2, 5)"
+                  :key="track.id"
+                >
+                  <img
+                    :src="track.album.images[1].url"
+                    style="margin-bottom: -150px"
+                  />
                 </div>
               </div>
             </div>
@@ -71,7 +89,6 @@ img {
 .col img:not(:hover) {
   z-index: 0;
 }
-
 </style>
 
 <script>
@@ -96,9 +113,9 @@ export default {
         }
       );
       const topTracks = await result.json();
-      console.log(topTracks.items);
+
       this.topTracks = topTracks.items;
-      console.log(this.topTracks);
+
       return topTracks;
     },
   },

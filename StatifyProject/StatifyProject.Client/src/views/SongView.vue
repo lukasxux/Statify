@@ -5,8 +5,9 @@ import axios from "axios";
 <template>
   <div class="songView">
     <div class="container">
-      <h1 class="title"><span style="color: #1db954">Top</span> Tracks</h1>
-
+      <div class="center-title">
+        <h1 class="title"><span style="color: #1db954">Top</span> Tracks</h1>
+      </div>
       <section id="profile" class="profile-section">
         <div class="avatar-wrapper">
           <img id="avatar" class="avatar" width="200" :src="avatarSrc" />
@@ -122,5 +123,10 @@ h1 {
 .song-table td img {
   width: 50px;
   height: 50px;
+}
+
+.center-title {
+  text-align: center;
+  color: white;
 }
 </style>

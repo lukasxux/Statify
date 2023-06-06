@@ -64,6 +64,7 @@ hr {
   font-size: 30px;
   margin-bottom: 40px;
   color: #fff;
+  text-align: center;
 }
 
 .display-name {
@@ -112,6 +113,7 @@ li {
 <script>
 import TopFiveSongsVue from "../components/TopFiveSongs.vue";
 import TopFiveArtist from "../components/TopFiveArtist.vue";
+
 export default {
   components: {
     TopFiveSongsVue,
@@ -135,6 +137,8 @@ export default {
   },
   mounted() {
     // Fetch the user's profile data from Spotify API and update the data properties
+    const isLoggedIn = this.$store.state.user.isLoggedIn;
+    console.log("setLoggedIn:", isLoggedIn);
     this.fetchUserData();
   },
   methods: {
@@ -158,7 +162,6 @@ export default {
       //const storedArrayString = sessionStorage.getItem('profile');
       const profil = await this.fetchProfile();
 
-      console.log(profile);
       this.displayName = this.profile.display_name;
       this.avatarSrc = this.profile.images[0].url;
       this.followers = this.profile.followers.total;

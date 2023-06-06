@@ -3,6 +3,34 @@ import axios from "axios";
 </script>
 
 <template>
+  <br />
+  <br />
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <img
+          class="img-statifyLogo"
+          src="../assets/img/StatifyLogo.png"
+          alt=""
+        />
+      </div>
+      <div id="welcome" class="col d-flex align-items-center">
+        <div>
+          <h1>Welcome to Statify</h1>
+          <h5>
+            Discover the beat of your musical journey with our Spotify API
+            integration. Explore your top songs, favorite artists, and other
+            users' musical tastes with ease!
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <br />
+  <br />
   <div class="container" id="container">
     <div class="form-container sign-up-container">
       <form @submit.prevent="loginUser">
@@ -78,6 +106,10 @@ import axios from "axios";
 </template>
 
 <style scoped>
+.img-statifyLogo {
+  width: 400px;
+}
+
 #forgot-password {
   color: white;
 }
@@ -376,12 +408,17 @@ export default {
           email: this.model.email,
           password: this.model.password,
         });
-        this.$store.commit("authenticate", response2.data);
         this.userGuid = response2.data.userGuid;
         localStorage.setItem("access_token", response2.data.accessToken);
         localStorage.setItem("refresh_token", response2.data.refreshToken);
         await this.UpdateUserData();
-        this.loggedIn = true;
+        this.$store.dispatch("storeData", response2.data);
+        console.log();
+        this.$store.dispatch("setLoggedIn").then(() => {
+          const isLoggedIn = this.$store.state.user.isLoggedIn;
+          console.log("setLoggedIn:", isLoggedIn);
+        });
+
         alert("Login successful!");
       } catch (error) {
         console.error(error);
@@ -423,7 +460,10 @@ export default {
       const params = new URLSearchParams();
       params.append("client_id", clientId);
       params.append("response_type", "code");
-      params.append("redirect_uri", "http://localhost:5173/login");
+      params.append(
+        "redirect_uri",
+        "https://statify-hyvzewj0usmbnyiu.azurewebsites.net"
+      );
       params.append(
         "scope",
         "user-read-private user-read-email user-library-read playlist-read-private playlist-read-collaborative user-follow-read user-follow-modify user-top-read"
@@ -440,7 +480,10 @@ export default {
       params.append("client_id", clientId);
       params.append("grant_type", "authorization_code");
       params.append("code", code);
-      params.append("redirect_uri", "http://localhost:5173/login");
+      params.append(
+        "redirect_uri",
+        "https://statify-hyvzewj0usmbnyiu.azurewebsites.net"
+      );
       params.append("code_verifier", verifier);
       params.append(
         "scope",

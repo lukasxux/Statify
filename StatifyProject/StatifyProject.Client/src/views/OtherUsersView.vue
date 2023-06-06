@@ -4,7 +4,9 @@ import axios from "axios";
 
 <template>
   <div>
-    <h1>Search for other users</h1>
+    <div class="center-title">
+      <h1><span style="color: #1db954">Search</span> for other users</h1>
+    </div>
     <div class="search-container">
       <img
         src="../assets/img/StatifyLogo.png"
@@ -22,24 +24,34 @@ import axios from "axios";
     <br />
     <br />
     <br />
-    <div
-      v-for="user in users"
-      :key="user"
-      @click="visitUserProfile(user)"
-      class="user-card"
-    >
-      <img src="../assets/img/StatifyLogo.png" alt="" />
-      <p>{{ user.username }}</p>
-    </div>
 
-    <div></div>
+    <div class="user-card-container">
+      <div
+        v-for="user in users"
+        :key="user"
+        @click="visitUserProfile(user)"
+        class="user-card"
+      >
+        <img src="../assets/img/StatifyLogo.png" alt="" />
+        <p>{{ user.username }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.center-title {
+  text-align: center;
+  color: white;
+}
 hr {
   display: inline-block;
   width: 50%;
+}
+
+.user-card-container {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .user-card img {
@@ -48,15 +60,17 @@ hr {
   margin-right: 10px;
   border-radius: 50%;
 }
+
 .user-card {
   display: flex;
   align-items: center;
   border-radius: 10px;
   border: 1px solid white;
   border-radius: 10px;
-  width: 400px;
+  width: calc(33.33% - 20px);
   height: 100px;
-  margin-bottom: 10px;
+  margin: 0 10px 10px 0;
+  color: white;
 }
 
 .search-container {
@@ -132,7 +146,6 @@ export default {
         headers,
       });
       this.users = response.data;
-      console.log(this.users);
     },
     async getProfilPictiure() {},
     visitUserProfile(user) {
