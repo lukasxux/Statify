@@ -108,8 +108,7 @@ export default {
       const token = process.env.TOKEN;
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.get(
-        "https://localhost:5001/api/spotify/topTracks/" +
-          sessionStorage.getItem("visit-user"),
+        "/spotify/topTracks/" + sessionStorage.getItem("visit-user"),
         {
           headers,
         }
