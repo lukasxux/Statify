@@ -1,5 +1,5 @@
 <script setup>
-import axios from 'axios';
+import axios from "axios";
 </script>
 
 <template>
@@ -16,51 +16,48 @@ import axios from 'axios';
         <button type="submit"><i class="fas fa-search"></i></button>
       </form>
     </div>
-    <br>
-    <br>
-    <hr>
-    <br>
-    <br>
-    <br>
-    <div v-for="(user) in users" :key="user" @click="visitUserProfile(user)" class="user-card">
-      <img src="../assets/img/StatifyLogo.png" alt="">
+    <br />
+    <br />
+    <hr />
+    <br />
+    <br />
+    <br />
+    <div
+      v-for="user in users"
+      :key="user"
+      @click="visitUserProfile(user)"
+      class="user-card"
+    >
+      <img src="../assets/img/StatifyLogo.png" alt="" />
       <p>{{ user.username }}</p>
     </div>
-    
 
-    <div>
-      
-
-    </div>
-
-
+    <div></div>
   </div>
 </template>
 
-
 <style scoped>
-hr{
-    display: inline-block;
-    width: 50%;
-  }
+hr {
+  display: inline-block;
+  width: 50%;
+}
 
 .user-card img {
-    width: 80px;
-    height: 80px;
-    margin-right: 10px;
-    border-radius: 50%;
-  }
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
 .user-card {
-    display: flex;
-    align-items: center;
-    border-radius: 10px;
-    border: 1px solid white;
-    border-radius: 10px;
-    width: 400px;
-    height: 100px;
-    margin-bottom: 10px;
-  }
-  
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid white;
+  border-radius: 10px;
+  width: 400px;
+  height: 100px;
+  margin-bottom: 10px;
+}
 
 .search-container {
   margin-top: 30px;
@@ -120,7 +117,7 @@ input[type="text"] {
 export default {
   data() {
     return {
-        users: []
+      users: [],
     };
   },
   mounted() {
@@ -128,30 +125,32 @@ export default {
   },
   methods: {
     async loadUsers() {
-        const token = "4UO5FmFW6wqj6PtWTXWRRiCvfdKq2dx+gsCM6d+eWR6++LrfKCP6jRvpMkw95KbYr9u1/VS1/fPWRg/XBmYjeQrR6knknq3w0TaDNOaU2QC8qP/CpTgdB5u3aHdIfpI1Tzn/5dx2fWYp0JCqYNhxzMDLGRifddA7JKUlhxVrx3E=";
-        const headers = { Authorization: `Bearer ${token}` };
-        const response = await axios.get("https://localhost:5001/api/users", { headers });
-        this.users = response.data;
-        console.log(this.users);
+      const token = process.env.TOKEN;
+
+      const headers = { Authorization: `Bearer ${token}` };
+      const response = await axios.get("https://localhost:5001/api/users", {
+        headers,
+      });
+      this.users = response.data;
+      console.log(this.users);
     },
-    async getProfilPictiure(){
-        
-    },
-    visitUserProfile(user){
-      sessionStorage.setItem("visit-user", user.accessToken);
+    async getProfilPictiure() {},
+    visitUserProfile(user) {
+      sessionStorage.setItem("visit-user", user.guid);
       this.$router.push("/other-users-profil");
-      console.log('Clicked user ID:', user);
+      console.log("Clicked user ID:", user);
     },
     async searchUsers() {
-      if (this.searchQuery.trim() === '') {
-    // Reset the users array if the search query is empty
-    this.loadUsers();
-  } else {
-    const query = this.searchQuery.toLowerCase();
-    this.users = this.users.filter(user => user.username.toLowerCase().includes(query));
-  }
+      if (this.searchQuery.trim() === "") {
+        // Reset the users array if the search query is empty
+        this.loadUsers();
+      } else {
+        const query = this.searchQuery.toLowerCase();
+        this.users = this.users.filter((user) =>
+          user.username.toLowerCase().includes(query)
+        );
+      }
     },
   },
 };
 </script>
-

@@ -7,13 +7,27 @@
             <h2 id="top-songs-title"></h2>
             <div v-if="topArtists.length">
               <div class="row">
-                <div class="col-md-6" v-for="(artist) in topArtists.slice(0,2)" :key="artist.id">
-                  <img :src="artist.images[1].url" style="margin-bottom: -150px" />
+                <div
+                  class="col-md-6"
+                  v-for="artist in topArtists.slice(0, 2)"
+                  :key="artist.id"
+                >
+                  <img
+                    :src="artist.images[1].url"
+                    style="margin-bottom: -150px"
+                  />
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-4" v-for="(artist) in topArtists.slice(2,5)" :key="artist.id">
-                  <img :src="artist.images[1].url" style="margin-bottom: -150px" />
+                <div
+                  class="col-md-4"
+                  v-for="artist in topArtists.slice(2, 5)"
+                  :key="artist.id"
+                >
+                  <img
+                    :src="artist.images[1].url"
+                    style="margin-bottom: -150px"
+                  />
                 </div>
               </div>
             </div>
@@ -22,12 +36,11 @@
         <div class="col">
           <h2 id="top-songs-title">Top 5 Artists</h2>
           <ul class="aritst-name">
-            <div v-for="(artist) in topArtists" :key="artist.id">
-              <li style="text-align: right">{{artist.name}}&nbsp;</li>
+            <div v-for="artist in topArtists" :key="artist.id">
+              <li style="text-align: right">{{ artist.name }}&nbsp;</li>
             </div>
           </ul>
         </div>
-        
       </div>
     </div>
   </div>
@@ -87,10 +100,11 @@ img {
 .col img:not(:hover) {
   z-index: 0;
 }
-
 </style>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -102,18 +116,17 @@ export default {
   },
   methods: {
     async fetchTopArtist() {
-      const access_token = sessionStorage.getItem('visit-user');
-          const result = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=5', {
-            headers: {
-              Authorization: `Bearer ${access_token}`
-            },
-          });
-          const topArtists = await result.json();
-          this.topArtists = topArtists.items;
-          console.log(this.topArtists);
-          return topArtists;
-        },
-
+      const token = process.env.TOKEN;
+      const headers = { Authorization: `Bearer ${token}` };
+      const response = await axios.get(
+        "https://localhost:5001/api/spotify/topArtists/" +
+          sessionStorage.getItem("visit-user"),
+        {
+          headers,
+        }
+      );
+      this.topArtists = response.data.items.slice(0, 5);
+    },
   },
 };
 </script>

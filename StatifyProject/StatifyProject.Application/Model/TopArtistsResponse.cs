@@ -25,6 +25,7 @@ namespace StatifyProject.Application.Model
         public string Href { get; set; } = string.Empty;
         public string Id { get; set; } = string.Empty;
         public ImageItem[]? Images { get; set; }
+        public string? Name { get; set; }
     }
 
     public class Followers

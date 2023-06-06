@@ -76,35 +76,18 @@ namespace StatifyProject.Controllers
                     return NotFound();
                 }
 
-                var userDto = new UserDto(
-                    user.Guid,
-                    user.Username,
-                    user.Email,
-                    user.AccessToken,
-                    user.RefreshToken,
-                    user.PasswordHash,
-                    user.Bio ?? string.Empty,
-                    user.FavoriteSong?.ToString() ?? string.Empty,
-                    user.FavoriteArtist?.ToString() ?? string.Empty,
+                var users = _context.Users.Select(u => new
+                {
+                    u.Id,
+                    u.Guid,
+                    u.Username,
+                    u.Created_at,
+                    u.FavoriteSong,
+                    u.FavoriteArtist,
+                    u.Bio,
+                    u.Role
+                }).ToList();
 
-                    user.Role
-                );
-                return Ok(userDto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while getting user by ID.");
-                return StatusCode(500, "Internal server error.");
-            }
-        }
-
-
-        [HttpGet]
-        public IActionResult GetUsers()
-        {
-            try
-            {
-                var users = _context.Users.ToList();
                 if (users == null || users.Count == 0)
                 {
                     return NotFound();
@@ -114,10 +97,43 @@ namespace StatifyProject.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while getting users.");
+                _logger.LogError(ex, "Error occurred while getting user by ID.");
                 return StatusCode(500, "Internal server error.");
             }
         }
+
+
+[HttpGet]
+public IActionResult GetUsers()
+{
+    try
+    {
+        var users = _context.Users.Select(u => new
+        {
+            u.Id,
+            u.Guid,
+            u.Username,
+            u.Created_at,
+            u.FavoriteSong,
+            u.FavoriteArtist,
+            u.Bio,
+            u.Role
+        }).ToList();
+
+        if (users == null || users.Count == 0)
+        {
+            return NotFound();
+        }
+
+        return Ok(users);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error occurred while getting users.");
+        return StatusCode(500, "Internal server error.");
+    }
+}
+
 
 
 
@@ -181,6 +197,8 @@ namespace StatifyProject.Controllers
                 return Ok(new
                 {
                     user.Username,
+                    user.AccessToken,
+                    user.RefreshToken,
                     UserGuid = user.Guid,
                     Token = tokenHandler.WriteToken(token)
                 });

@@ -12,7 +12,7 @@ namespace StatifyProject.Application.Model
         {
             public string? Country { get; set; }
             public string? Display_Name { get; set; }
-            public string? Email { get; set; }
+            //public string? Email { get; set; }
             public ExplicitContent? Explicit_Content { get; set; }
             public ExternalUrls? External_Urls { get; set; }
             public Followers? Followers { get; set; }

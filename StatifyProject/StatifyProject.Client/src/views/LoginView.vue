@@ -370,9 +370,6 @@ export default {
       const response3 = await axios.get(
         "https://localhost:5001/api/users/" + this.userGuid
       );
-      console.log(response3.data);
-      localStorage.setItem("access_token", response3.data.accessToken);
-      localStorage.setItem("refresh_token", response3.data.refreshToken);
       this.user = response3.data;
     },
     async loginUser() {
@@ -386,7 +383,8 @@ export default {
         );
         this.$store.commit("authenticate", response2.data);
         this.userGuid = response2.data.userGuid;
-        console.log(response2);
+        localStorage.setItem("access_token", response2.data.accessToken);
+        localStorage.setItem("refresh_token", response2.data.refreshToken);
         await this.UpdateUserData();
         this.loggedIn = true;
         alert("Login successful!");
@@ -430,7 +428,7 @@ export default {
       const params = new URLSearchParams();
       params.append("client_id", clientId);
       params.append("response_type", "code");
-      params.append("redirect_uri", "http://localhost:5173/login");
+      params.append("redirect_uri", "https://localhost:5001/login");
       params.append(
         "scope",
         "user-read-private user-read-email user-library-read playlist-read-private playlist-read-collaborative user-follow-read user-follow-modify user-top-read"
@@ -447,7 +445,7 @@ export default {
       params.append("client_id", clientId);
       params.append("grant_type", "authorization_code");
       params.append("code", code);
-      params.append("redirect_uri", "http://localhost:5173/login");
+      params.append("redirect_uri", "https://localhost:5001/login");
       params.append("code_verifier", verifier);
       params.append(
         "scope",
