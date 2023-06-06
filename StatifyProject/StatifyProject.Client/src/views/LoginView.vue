@@ -462,7 +462,7 @@ export default {
       params.append("response_type", "code");
       params.append(
         "redirect_uri",
-        "https://statify-hyvzewj0usmbnyiu.azurewebsites.net"
+        "https://statify-hyvzewj0usmbnyiu.azurewebsites.net/login"
       );
       params.append(
         "scope",
@@ -482,7 +482,7 @@ export default {
       params.append("code", code);
       params.append(
         "redirect_uri",
-        "https://statify-hyvzewj0usmbnyiu.azurewebsites.net"
+        "https://statify-hyvzewj0usmbnyiu.azurewebsites.net/login"
       );
       params.append("code_verifier", verifier);
       params.append(
