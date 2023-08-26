@@ -460,10 +460,7 @@ export default {
       const params = new URLSearchParams();
       params.append("client_id", clientId);
       params.append("response_type", "code");
-      params.append(
-        "redirect_uri",
-        "https://statify-hyvzewj0usmbnyiu.azurewebsites.net/login"
-      );
+      params.append("redirect_uri", "https://localhost:5001/login");
       params.append(
         "scope",
         "user-read-private user-read-email user-library-read playlist-read-private playlist-read-collaborative user-follow-read user-follow-modify user-top-read"
@@ -480,10 +477,7 @@ export default {
       params.append("client_id", clientId);
       params.append("grant_type", "authorization_code");
       params.append("code", code);
-      params.append(
-        "redirect_uri",
-        "https://statify-hyvzewj0usmbnyiu.azurewebsites.net/login"
-      );
+      params.append("redirect_uri", "https://localhost:5001/login");
       params.append("code_verifier", verifier);
       params.append(
         "scope",
