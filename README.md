@@ -17,7 +17,6 @@ Statify ist eine Webapplikation, die dem Nutzer seine Stats von Spotify anzeigen
 | Name                    | Email                    | Aufgabenbereich                                                      |
 | ----------------------- | ------------------------ | -------------------------------------------------------------------- |
 | Lukas Hainzl,	    3CHIF | hai20266@spengergasse.at | Backend, Frontend, Sequenzdiagramm, Use-Case Login                   |
-| Maximilian Bauer, 3CHIF | bau20220@spengergasse.at | Frontend, Use-Case Top Tracks(Button)                                |
 | Raffael Rabl,     3CHIF | rab20362@spengergasse.at | Backend, Zeitaufzeichnung, Use-Case Logout, Lastenheft, Gnatt Chart  |
 | Luca Racz,        3CHIF | rac20363@spengergasse.at | Frontend, README, wireframes / mockups, Use-Case Top Artists(Button) |
 
